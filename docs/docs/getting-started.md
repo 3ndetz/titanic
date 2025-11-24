@@ -23,6 +23,12 @@ make create_environment
 make requirements
 ```
 
+Если нужны хуки pre-commit, поставить:
+
+```bash
+pre-commit install
+```
+
 Запустить тесты в докере:
 
 ```bash
