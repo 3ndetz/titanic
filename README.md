@@ -66,4 +66,4 @@ Solving simple titanic competition using advanced engineering practices
 
 Документация (в том числе по запуску): <https://3ndetz.github.io/titanic/>
 
-(билдится из `docs/docs` и подгружается в GH Pages по ссылке )
+(билдится из `docs/docs` и подгружается в GH Pages по ссылке)
