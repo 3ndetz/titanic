@@ -10,4 +10,14 @@ services:
       - ./notebooks:/app/notebooks
     environment:
       - PYTHONUNBUFFERED=1
-    command: /bin/bash
+    command: >
+      bash -c "
+      echo '=== Testing imports ===' &&
+      python -c 'import titanic; print(\"✓ titanic imported successfully\")' &&
+      echo '=== Running tests ===' &&
+      pytest tests/ -v &&
+      echo '=== All checks passed! ===' &&
+      exec bash
+      "
+    stdin_open: true
+    tty: true
