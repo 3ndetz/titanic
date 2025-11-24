@@ -69,7 +69,7 @@
 
 5. Кастомизировал шаблон и создал проект
 
-    ```bash
+    ```text
     (titanic) C:\Stud\Repos\titanic>ccds
     project_name (project_name): titanic
     repo_name (titanic): titanic
