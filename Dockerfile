@@ -12,6 +12,9 @@ RUN uv pip install --system --no-cache -r pyproject.toml
 COPY titanic/ ./titanic/
 COPY tests/ ./tests/
 
+# Ридми нужен для flitcore
+COPY README.md LICENSE ./
+
 # Установка самого пакета
 RUN uv pip install --system --no-cache -e .
 
