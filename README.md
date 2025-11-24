@@ -10,7 +10,7 @@ Solving simple titanic competition using advanced engineering practices
 
 ```
 ├── LICENSE            <- Open-source license if one is chosen
-├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
+├── Makefile           <- Makefile with convenience commands like `make data`
 ├── README.md          <- The top-level README for developers using this project.
 ├── data
 │   ├── external       <- Data from third party sources.
@@ -18,7 +18,8 @@ Solving simple titanic competition using advanced engineering practices
 │   ├── processed      <- The final, canonical data sets for modeling.
 │   └── raw            <- The original, immutable data dump.
 │
-├── docs               <- A default mkdocs project; see www.mkdocs.org for details
+├── docs               <- A default mkdocs project
+│   └── reports        <- Course reports
 │
 ├── models             <- Trained and serialized models, model predictions, or model summaries
 │
@@ -27,17 +28,12 @@ Solving simple titanic competition using advanced engineering practices
 │                         `1.0-jqp-initial-data-exploration`.
 │
 ├── pyproject.toml     <- Project configuration file with package metadata for 
-│                         titanic and configuration for tools like black
+│                         titanic and configuration for tools like ruff
 │
 ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
 │
 ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
 │   └── figures        <- Generated graphics and figures to be used in reporting
-│
-├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-│                         generated with `pip freeze > requirements.txt`
-│
-├── setup.cfg          <- Configuration file for flake8
 │
 └── titanic   <- Source code for use in this project.
     │
@@ -58,3 +54,16 @@ Solving simple titanic competition using advanced engineering practices
 ```
 
 --------
+
+Отчёты для курса лежат в `docs/reports`:
+
+1. [x] [HW 1](./docs/reports/hw1_initial.md)
+2. [ ] HW 2
+3. [ ] HW 3
+4. [ ] HW 4
+5. [ ] HW 5
+6. [ ] HW 6
+
+Документация (в том числе по запуску): <https://3ndetz.github.io/titanic/>
+
+(билдится из `docs/docs` и подгружается в GH Pages по ссылке )

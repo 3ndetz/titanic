@@ -1,8 +1,30 @@
 Getting started
 ===============
 
-TODO
+Поставить uv на систему и makefile (если нету).
 
-This is where you describe how to get set up on a clean install, including the
-commands necessary to get the raw data (using the `sync_data_from_s3` command,
-for example), and then how to make the cleaned, final data sets.
+Затем:
+
+Склонить репозиторий
+
+```bash
+git clone https://github.com/3ndetz/titanic.git
+```
+
+Создать окружение
+
+```bash
+make create_environment
+```
+
+Поставить зависимости
+
+```bash
+make requirements
+```
+
+Запустить тесты в докере:
+
+```bash
+docker-compose up --build
+```
