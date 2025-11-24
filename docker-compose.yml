@@ -1,0 +1,13 @@
+services:
+  titanic:
+    build: .
+    container_name: titanic-ml
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./notebooks:/app/notebooks
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: /bin/bash
