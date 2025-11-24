@@ -2,67 +2,53 @@
 
 ## Задача
 
-<section id="дз-1-настройка-рабочего-места-data-scientist" class="level2">
-<h2 class="anchored" data-anchor-id="дз-1-настройка-рабочего-места-data-scientist">ДЗ 1: Настройка рабочего места Data Scientist<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#дз-1-настройка-рабочего-места-data-scientist" style="font: 1em / 1 anchorjs-icons; margin-left: 0.1875em; padding-right: 0.1875em; padding-left: 0.1875em;"></a></h2>
-<ul>
-<li><strong>Баллы:</strong> 8 баллов<br>
-</li>
-<li><strong>Срок сдачи:</strong> 24 ноября</li>
-</ul>
-<section id="описание" class="level3">
-<h3 class="anchored" data-anchor-id="описание">Описание<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#описание" style="font: 1em / 1 anchorjs-icons; margin-left: 0.1875em; padding-right: 0.1875em; padding-left: 0.1875em;"></a></h3>
-<p>Настройте полноценное рабочее место для Data Science с использованием современных инженерных практик.</p>
-</section>
-<section id="требования" class="level3">
-<h3 class="anchored" data-anchor-id="требования">Требования<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#требования" style="font: 1em / 1 anchorjs-icons; margin-left: 0.1875em; padding-right: 0.1875em; padding-left: 0.1875em;"></a></h3>
-<ol type="1">
-<li><strong>Структура проекта (2 балла):</strong>
-<ul>
-<li>Создать структуру папок с помощью Cookiecutter или Copier</li>
-<li>Настроить шаблоны для новых проектов</li>
-<li>Создать README с описанием проекта</li>
-</ul></li>
-<li><strong>Качество кода (2 балла):</strong>
-<ul>
-<li>Настроить pre-commit hooks</li>
-<li>Настроить форматирование кода (Black, isort, Ruff)</li>
-<li>Настроить линтеры (Ruff, MyPy, Bandit)</li>
-<li>Создать конфигурационные файлы</li>
-</ul></li>
-<li><strong>Управление зависимостями (2 балла):</strong>
-<ul>
-<li>Настроить пакетный менджер (например poretry или pixi) для управления зависимостями</li>
-<li>Создать pyproject с точными версиями</li>
-<li>Настроить виртуальное окружение</li>
-<li>Создать Dockerfile для контейнеризации</li>
-</ul></li>
-<li><strong>Git workflow (1 балл):</strong>
-<ul>
-<li>Настроить Git репозиторий</li>
-<li>Создать .gitignore для ML проекта</li>
-<li>Настроить ветки для разных этапов работы</li>
-</ul></li>
-<li><strong>Отчет о проделанной работе (1 балл):</strong>
-<ul>
-<li>Создать отчет в формате Markdown</li>
-<li>Описать настройку каждого инструмента</li>
-<li>Добавить скриншоты результатов</li>
-<li>Сохранить отчет в Git репозитории</li>
-</ul></li>
-</ol>
-</section>
-<section id="критерии-оценки" class="level3">
-<h3 class="anchored" data-anchor-id="критерии-оценки">Критерии оценки<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#критерии-оценки" style="font: 1em / 1 anchorjs-icons; margin-left: 0.1875em; padding-right: 0.1875em; padding-left: 0.1875em;"></a></h3>
-<ul>
-<li><strong>Отлично (8 баллов):</strong> Все требования выполнены, код качественный</li>
-<li><strong>Хорошо (6-7 баллов):</strong> Основные требования выполнены</li>
-<li><strong>Удовлетворительно (4-5 баллов):</strong> Большинство требований выполнено</li>
-<li><strong>Неудовлетворительно (0-3 балла):</strong> Требования не выполнены</li>
-</ul>
-<p><strong>⚠️ ВАЖНО:</strong> Менторы будут воспроизводить ваши результаты, поэтому постарайтесь все автоматизировать. Если что-то не совпадет при воспроизведении, можно потерять баллы.</p>
-<hr>
-</section>
-</section>
+ДЗ 1: Настройка рабочего места Data Scientist
+
+**Баллы:** 8 баллов  
+**Срок сдачи:** 24 ноября
+
+### Описание
+
+Настройте полноценное рабочее место для Data Science с использованием современных инженерных практик.
+
+### Требования
+
+1. **Структура проекта (2 балла):**
+   - Создать структуру папок с помощью Cookiecutter или Copier
+   - Настроить шаблоны для новых проектов
+   - Создать README с описанием проекта
+
+2. **Качество кода (2 балла):**
+   - Настроить pre-commit hooks
+   - Настроить форматирование кода (Black, isort, Ruff)
+   - Настроить линтеры (Ruff, MyPy, Bandit)
+   - Создать конфигурационные файлы
+
+3. **Управление зависимостями (2 балла):**
+   - Настроить пакетный менеджер (например poetry или pixi) для управления зависимостями
+   - Создать pyproject с точными версиями
+   - Настроить виртуальное окружение
+   - Создать Dockerfile для контейнеризации
+
+4. **Git workflow (1 балл):**
+   - Настроить Git репозиторий
+   - Создать .gitignore для ML проекта
+   - Настроить ветки для разных этапов работы
+
+5. **Отчет о проделанной работе (1 балл):**
+   - Создать отчет в формате Markdown
+   - Описать настройку каждого инструмента
+   - Добавить скриншоты результатов
+   - Сохранить отчет в Git репозитории
+
+### Критерии оценки
+
+- **Отлично (8 баллов):** Все требования выполнены, код качественный
+- **Хорошо (6-7 баллов):** Основные требования выполнены
+- **Удовлетворительно (4-5 баллов):** Большинство требований выполнено
+- **Неудовлетворительно (0-3 балла):** Требования не выполнены
+
+**⚠️ ВАЖНО:** Менторы будут воспроизводить ваши результаты, поэтому постарайтесь все автоматизировать. Если что-то не совпадет при воспроизведении, можно потерять баллы.
 
 ## Преподготовка
 
@@ -78,12 +64,12 @@
    ```
 
 4. Поставил cookiecutter
-   
+
    `uv pip install cookiecutter-data-science`
 
 5. Кастомизировал шаблон и создал проект
 
-    ```
+    ```bash
     (titanic) C:\Stud\Repos\titanic>ccds
     project_name (project_name): titanic
     repo_name (titanic): titanic
