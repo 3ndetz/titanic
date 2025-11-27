@@ -86,10 +86,40 @@
                     <div class="col-md-9" role="main">
 
 <h1 id="getting-started">Getting started</h1>
-<p>Поставить uv на систему и makefile (если нету).</p>
+<p>Поставить необходимое ПО на систему.</p>
+<p>Информация о платформе и используемых версиях ПО для воспроизводимости:</p>
+<ul>
+<li>Платформа: Windows 11 Pro 25H2 64 Bit, build 26200.7171</li>
+<li>Версия <a href="https://docs.astral.sh/uv/#installation">UV</a>: uv 0.9.3 (83635a6c4 2025-10-15)</li>
+<li>
+<p>Поставлен через Windows powershell</p>
+<p><code>powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</code></p>
+</li>
+<li>
+<p>Версия Make: GNU Make 4.4.1 built for Windows32</p>
+</li>
+<li>
+<p>Поставлен через <a href="https://chocolatey.org/install">chocolatey</a></p>
+<p><code>choco install make</code></p>
+</li>
+<li>
+<p><a href="https://www.docker.com/">Docker</a> на базе WSL, 28.5.1, build e180ab8</p>
+</li>
+<li>Docker Compose version v2.40.0-desktop.1</li>
+<li>
+<p>Docker Desktop Windows version 4.52.0</p>
+</li>
+<li>
+<p><a href="https://git-scm.com/">Git</a> version 2.51.0.windows.2</p>
+</li>
+</ul>
 <p>Затем:</p>
 <p>Склонить репозиторий</p>
 <pre><code class="language-bash">git clone https://github.com/3ndetz/titanic.git
+cd titanic
+</code></pre>
+<p>Если нужно, перейти в необходимую ветку</p>
+<pre><code class="language-bash">git checkout &lt;имя_ветки&gt;
 </code></pre>
 <p>Создать окружение</p>
 <pre><code class="language-bash">make create_environment
