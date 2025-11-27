@@ -4,6 +4,8 @@
 
 Solving simple titanic competition with advanced engineering practices
 
+Общее описание структуры, веток и отчётов в [README](https://github.com/3ndetz/titanic) корневой папки проекта.
+
 См. раздел [getting started](./getting-started.md) для предварительных инструкций.
 
 ## Commands

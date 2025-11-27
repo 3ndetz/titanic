@@ -55,6 +55,29 @@ Solving simple titanic competition using advanced engineering practices
 
 --------
 
+## Распределение веток
+
+```text
+├── main            <- Текущая последняя проверенная версия кода
+├── gh-pages        <- Автособираемая документация проекта mkdocs
+├── task2           <- Branch for task 2
+├── task3           <- Branch for task 3
+...
+└── taskN           <- Branch for task N
+```
+
+--------
+
+> Task 1 сделан в main т.к. initial
+
+## Документация
+
+Документация проекта, в том числе по запуску: <https://3ndetz.github.io/titanic/>
+
+> Билдится из `docs/docs` и подгружается в GH Pages по ссылке
+
+## Отчёты
+
 Отчёты для курса лежат в `docs/reports`:
 
 1. [x] [HW 1](./docs/reports/hw1_initial.md)
@@ -63,7 +86,3 @@ Solving simple titanic competition using advanced engineering practices
 4. [ ] HW 4
 5. [ ] HW 5
 6. [ ] HW 6
-
-Документация (в том числе по запуску): <https://3ndetz.github.io/titanic/>
-
-(билдится из `docs/docs` и подгружается в GH Pages по ссылке)
