@@ -81,7 +81,7 @@ Solving simple titanic competition using advanced engineering practices
 Отчёты для курса лежат в `docs/reports`:
 
 1. [x] [HW 1](./docs/reports/hw1_initial.md)
-2. [ ] HW 2
+2. [x] [HW 2](./docs/reports/hw2.md)
 3. [ ] HW 3
 4. [ ] HW 4
 5. [ ] HW 5
