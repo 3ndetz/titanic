@@ -8,7 +8,7 @@
         <meta name="author" content="3ndetz">
         
         <link rel="shortcut icon" href="../img/favicon.ico">
-        <title>Getting started - titanic</title>
+        <title>Data - titanic</title>
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/fontawesome.min.css" rel="stylesheet">
         <link href="../css/brands.min.css" rel="stylesheet">
@@ -38,10 +38,10 @@
                                 <a href=".." class="nav-link">Titanic ML</a>
                             </li>
                             <li class="nav-item">
-                                <a href="../data/" class="nav-link">Data</a>
+                                <a href="./" class="nav-link active" aria-current="page">Data</a>
                             </li>
                             <li class="nav-item">
-                                <a href="./" class="nav-link active" aria-current="page">Getting started</a>
+                                <a href="../getting-started/" class="nav-link">Getting started</a>
                             </li>
                         </ul>
 
@@ -52,12 +52,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../data/" class="nav-link">
+                                <a rel="prev" href=".." class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" class="nav-link disabled">
+                                <a rel="next" href="../getting-started/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -79,8 +79,24 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#getting-started" class="nav-link">Getting started</a>
+            <li class="nav-item" data-bs-level="1"><a href="#data" class="nav-link">Data</a>
               <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#_1" class="nav-link">Содержание</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_2" class="nav-link">Текущие данные в проекте</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_5" class="nav-link">Загрузка новых данных</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_6" class="nav-link">Версионирование данных</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
               </ul>
             </li>
         </ul>
@@ -88,54 +104,66 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="getting-started">Getting started</h1>
-<p>Поставить необходимое ПО на систему.</p>
-<p>Информация о платформе и используемых версиях ПО для воспроизводимости:</p>
+<h1 id="data">Data</h1>
+<p>Всё про данные в проекте.</p>
+<h2 id="_1">Содержание</h2>
 <ul>
-<li>Платформа: Windows 11 Pro 25H2 64 Bit, build 26200.7171</li>
-<li>Версия <a href="https://docs.astral.sh/uv/#installation">UV</a>: uv 0.9.3 (83635a6c4 2025-10-15)</li>
-<li>
-<p>Поставлен через Windows powershell</p>
-<p><code>powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</code></p>
-</li>
-<li>
-<p>Версия Make: GNU Make 4.4.1 built for Windows32</p>
-</li>
-<li>
-<p>Поставлен через <a href="https://chocolatey.org/install">chocolatey</a></p>
-<p><code>choco install make</code></p>
-</li>
-<li>
-<p><a href="https://www.docker.com/">Docker</a> на базе WSL, 28.5.1, build e180ab8</p>
-</li>
-<li>Docker Compose version v2.40.0-desktop.1</li>
-<li>
-<p>Docker Desktop Windows version 4.52.0</p>
-</li>
-<li>
-<p><a href="https://git-scm.com/">Git</a> version 2.51.0.windows.2</p>
-</li>
+<li><a href="#data">Data</a></li>
+<li><a href="#содержание">Содержание</a></li>
+<li><a href="#текущие-данные-в-проекте">Текущие данные в проекте</a><ul>
+<li><a href="#структура-папок">Структура папок</a></li>
+<li><a href="#текущие-данные">Текущие данные</a></li>
 </ul>
-<p>Затем:</p>
-<p>Склонить репозиторий</p>
-<pre><code class="language-bash">git clone https://github.com/3ndetz/titanic.git
-cd titanic
+</li>
+<li><a href="#загрузка-новых-данных">Загрузка новых данных</a></li>
+<li><a href="#версионирование-данных">Версионирование данных</a></li>
+</ul>
+<h2 id="_2">Текущие данные в проекте</h2>
+<h3 id="_3">Структура папок</h3>
+<p>Данные хранятся в папке <code>data/</code> в корне проекта.</p>
+<p>Структура папок данных следующая:</p>
+<pre><code class="language-text">data/
+├── raw/               &lt;- Сырые данные из источников
+│   ├── *.csv           &lt;- Сырые табличные данные
+│   ├── *.dvc           &lt;- Трекер dvc
+│   └── *_metadata.yaml &lt;- Схема данных
+├── external/          &lt;- Данные из сторонних источников
+├── interim/           &lt;- Промежуточные преобразованные данные
+├── processed/         &lt;- Обработанные данные для моделей
+│   ├── *.parquet       &lt;- Обработанные табличные данные
+│   └── *_metadata.yaml &lt;- Схема данных
+├── features/          &lt;- Сгенерированные фичи для моделей
+└── models/            &lt;- Чекпоинты моделей
 </code></pre>
-<p>Если нужно, перейти в необходимую ветку</p>
-<pre><code class="language-bash">git checkout &lt;имя_ветки&gt;
+<p>Также для удобства работы с данными в IDE предусмотрены pydantic-модели данных.</p>
+<pre><code class="language-text">titanic/
+└── schema/
+    └── dataset_schema.py &lt;- Pydantic-модели для табличных данных
 </code></pre>
-<p>Создать окружение</p>
-<pre><code class="language-bash">make create_environment
-</code></pre>
-<p>Поставить зависимости</p>
-<pre><code class="language-bash">make requirements
-</code></pre>
-<p>Если нужны хуки pre-commit, поставить:</p>
-<pre><code class="language-bash">pre-commit install
-</code></pre>
-<p>Запустить тесты в докере:</p>
-<pre><code class="language-bash">docker-compose up --build
-</code></pre></div>
+<p>Во всех этих подпапках, кроме <code>models</code> должны храниться данные.
+В <code>raw</code> допускается <code>csv</code>, в остальных используем <code>parquet</code> для эффективности.</p>
+<p>Каждый файл данных в папках <code>raw</code> и <code>processed</code> должен иметь рядом файл с метаданными в формате yaml, описывающий схему данных в <a href="https://pandera.readthedocs.io/en/latest/schema_inference.html">pandera</a>-совместимом формате.</p>
+<h3 id="_4">Текущие данные</h3>
+<p>Изначальные сырые данные скачаны вручную из <a href="https://www.kaggle.com/competitions/titanic/data">Kaggle</a> и помещены в <code>data/raw/</code>.</p>
+<blockquote>
+<p>Более красивым способом будет автоматизация через Kaggle и скачивание командой</p>
+</blockquote>
+<p>Далее с данными была проведена работа, см. раздел ниже.</p>
+<h2 id="_5">Загрузка новых данных</h2>
+<p>Чтобы добавить новые данные в проект, нужно:</p>
+<ol>
+<li>Положить новые сырые данные <code>.csv</code> в папку <code>data/raw/</code>.</li>
+<li>Подготовить схемы данных в формате, совместимом с pandera schema и создать соответствующие yaml-файлы:</li>
+<li><code>data/raw/&lt;new_dataset&gt;_metadata.yaml</code> - для сырых данных</li>
+<li><code>data/processed/&lt;new_dataset&gt;_metadata.yaml</code> - для обработанных данных</li>
+<li>Создать pydantic-модель для валидации строк новых данных в <code>titanic/schema/dataset_schema.py</code> для комфортной работе в коде.</li>
+<li>При необходимости изменить обработку новых данных в <code>titanic/dataset.py</code>.</li>
+<li>Запустить команду <code>dvc repro process_data</code>, чтобы обработать новые данные и сохранить их в <code>data/processed/</code>.</li>
+<li>Зафиксировать изменения в git, указав название коммита и эксперимента, и сделать dvc push.</li>
+</ol>
+<h2 id="_6">Версионирование данных</h2>
+<p>Данные версионируются с помощью DVC, подключенному к приложению Google Drive. Для доступа к этому диску сообщите разработчику gmail-почту, и тогда сможете пройти oauth при <code>dvc pull</code>.</p>
+<p>Соответственно, <code>dvc pull</code> подтянет все данные из удалённого хранилища.</p></div>
             </div>
         </div>
 
