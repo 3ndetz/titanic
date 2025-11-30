@@ -1,0 +1,10 @@
+stages:
+  process_data:
+    cmd: python titanic/dataset.py
+    deps:
+    - data/raw/train.csv
+    - data/raw/train_metadata.yaml
+    - data/processed/processed_metadata.yaml
+    - titanic/dataset.py
+    outs:
+    - data/processed/processed.parquet
