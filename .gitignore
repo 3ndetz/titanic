@@ -3,6 +3,7 @@
 /data/**/*
 !/data/**/
 !/data/**/*.dvc
+!/data/**/*.yaml
 !/data/.gitkeep
 !/data/**/.gitkeep
 
