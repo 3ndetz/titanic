@@ -1,5 +1,16 @@
 # Data
-/data/
+# /data/
+/data/**/*
+!/data/**/
+!/data/**/*.dvc
+!/data/.gitkeep
+!/data/**/.gitkeep
+
+# DVC local config and cache
+.dvc/config.local
+.dvc/tmp
+.dvc/cache
+
 
 # Mac OS-specific storage files
 .DS_Store
@@ -195,6 +206,3 @@ uv.lock
 
 # my inner docs
 think/
-
-# add all .dvc files
-!*.dvc
