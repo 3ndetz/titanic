@@ -20,11 +20,13 @@ dependencies = [
     "dvc-gdrive>=3.0.1",
     "loguru==0.7.3",
     "mkdocs==1.6.1",
+    "pandas>=2.3.3",
     "pip==25.3",
     "pre-commit==4.5.0",
     "pytest==9.0.1",
     "python-dotenv==1.2.1",
     "ruff==0.14.6",
+    "scikit-learn>=1.7.2",
     "tqdm==4.67.1",
     "typer==0.20.0",
 ]
