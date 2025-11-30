@@ -17,6 +17,7 @@ classifiers = [
 ]
 dependencies = [
     "dvc>=3.64.0",
+    "dvc-gdrive>=3.0.1",
     "loguru==0.7.3",
     "mkdocs==1.6.1",
     "pip==25.3",
