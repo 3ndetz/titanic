@@ -3,68 +3,58 @@ from pathlib import Path
 from loguru import logger
 import pandas as pd
 import pandera as pa
+import pydantic
 from tqdm import tqdm
 import typer
-import yaml
 
 from titanic.config import PROCESSED_DATA_DIR, RAW_DATA_DIR
-from titanic.schema.dataset_schema import TitanicRow
+from titanic.schema.dataset_schema import ProcessedTitanicRow, RawTitanicRow
 
 
-def load_csv(path):
+def load_csv(path: Path) -> pd.DataFrame:
     """For loading raw csv dataset."""
-    return pd.read_csv(path)
+
+    df = pd.read_csv(path)
+    df = df.where(pd.notnull(df), None)  # fix nan to None for pydantic
+
+    # fix object columns to string dtype for pandera
+    object_columns = df.select_dtypes(include="object").columns
+    df[object_columns] = df[object_columns].astype("string")
+
+    return df
 
 
-def load_metadata(yaml_path):
-    """For loading metadata from a yaml file."""
-    with open(yaml_path, "r", encoding="utf-8") as f:
-        return yaml.safe_load(f)["columns"]
-
-
-def check_structure(df, metadata):
-    """Checks if dataframe structure matches the metadata."""
-    missing = [col for col in metadata if col not in df.columns]
-    if missing:
-        raise ValueError(f"Missing columns: {missing}")
-    # Проверка типов и допустимых значений
-    for col, props in metadata.items():
-        if "values" in props:
-            valid_values = props["values"]
-            invalid = df[col].apply(lambda x: x is not None and x not in valid_values)
-            if invalid.any():
-                logger.error(f"Invalid values in column {col}: {df.loc[invalid, col].unique()}")
-
-
-def validate_rows(df) -> list[tuple[int, str]]:
+def validate_rows(df, row_model: pydantic.BaseModel) -> list[tuple[int, str]]:
     """Validates each row against the TitanicRow schema."""
     errors = []
     for idx, row in tqdm(df.iterrows()):
         try:
-            TitanicRow(**row.to_dict())
-        except Exception as e:
+            row_model(**row.to_dict())
+        except pydantic.ValidationError as e:
             errors.append((idx, str(e)))
     return errors
 
 
-def validate_dataset(df: pd.DataFrame) -> bool:
+def validate_dataset(df: pd.DataFrame, path: Path, row_model: pydantic.BaseModel) -> bool:
     """
     Validates the Titanic dataset against the schema and metadata.
 
     Returns:
         True if valid, False otherwise.
     """
-    df = df.where(pd.notnull(df), None)  # fix nan to None for pydantic
-    metadata = load_metadata(RAW_DATA_DIR / "train_metadata.yaml")
-    check_structure(df, metadata)
-    errors = validate_rows(df)
-    print(df.head())
+    schema_path = str(path).rsplit(".", 1)[0] + "_metadata.yaml"
+    schema = pa.DataFrameSchema.from_yaml(schema_path)
+
+    df = schema.validate(df)
+    logger.success("Dataset structure schema valid.")
+
+    errors = validate_rows(df, row_model)
     if errors:
         logger.info("Validation errors found:")
         for idx, err in errors:
             logger.info(f"Row {idx}: {err}")
     else:
-        logger.info("All rows are valid.")
+        logger.success("All rows are valid.")
     return not errors
 
 
@@ -73,7 +63,7 @@ def generate_yaml_schema(df: pd.DataFrame, output_path: Path) -> None:
     Generates a YAML schema for the processed dataset.
     """
     schema = pa.infer_schema(df)
-    output_yaml_path = str(output_path).replace(".parquet", "_metadata.yaml")
+    output_yaml_path = str(output_path).rsplit(".", 1)[0] + "_metadata.yaml"
     schema.to_yaml(output_yaml_path)
 
 
@@ -112,8 +102,8 @@ def save_dataset(df: pd.DataFrame, output_path: Path) -> None:
 
 
 def prepare_dataset(
-    input_path,
-    output_path,
+    input_path: Path,
+    output_path: Path,
 ) -> None:
     """
     Process the Titanic dataset.
@@ -122,8 +112,9 @@ def prepare_dataset(
 
     logger.info(f"Loading dataset from {input_path}...")
     df = load_csv(input_path)
+
     logger.info("Validating dataset...")
-    if not validate_dataset(df):
+    if not validate_dataset(df, input_path, RawTitanicRow):
         logger.error("Validation failed. Check the input data and schemas.")
         return
     logger.success("Validation successful.")
@@ -132,9 +123,17 @@ def prepare_dataset(
     df = process_dataset(df)
     logger.success("Dataset processing complete.")
 
+    logger.info("Final validation of processed dataset...")
+    if not validate_dataset(df, output_path, ProcessedTitanicRow):
+        logger.error("Validation failed after processing. Check the processed data and schemas.")
+        return
+    logger.success("Final validation successful.")
+
     logger.info(f"Saving processed dataset to {output_path}...")
     save_dataset(df, output_path)
-    generate_yaml_schema(df, output_path)
+
+    # If we need to export some schema to yaml
+    # generate_yaml_schema(df, output_path)
 
     logger.success("Preparing dataset complete.")
 
