@@ -12,11 +12,7 @@ Solving simple titanic competition using advanced engineering practices
 ├── LICENSE            <- Open-source license if one is chosen
 ├── Makefile           <- Makefile with convenience commands like `make data`
 ├── README.md          <- The top-level README for developers using this project.
-├── data
-│   ├── external       <- Data from third party sources.
-│   ├── interim        <- Intermediate data that has been transformed.
-│   ├── processed      <- The final, canonical data sets for modeling.
-│   └── raw            <- The original, immutable data dump.
+├── data               <- See docs/docs/data.md for details
 │
 ├── docs               <- A default mkdocs project
 │   └── reports        <- Course reports
