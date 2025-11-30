@@ -1,0 +1,26 @@
+schema: '2.0'
+stages:
+  process_data:
+    cmd: python titanic/dataset.py
+    deps:
+    - path: data/processed/processed_metadata.yaml
+      hash: md5
+      md5: f6686c2019ffe2dfb2936dbb4c0d164a
+      size: 1425
+    - path: data/raw/train.csv
+      hash: md5
+      md5: 2309cc5f04782ed9bb6016d9f4e381cf
+      size: 61194
+    - path: data/raw/train_metadata.yaml
+      hash: md5
+      md5: fc841a0b0045cfd09db93e16a77d2e96
+      size: 1522
+    - path: titanic/dataset.py
+      hash: md5
+      md5: 44cdf36df319d559055717c40027b86c
+      size: 4673
+    outs:
+    - path: data/processed/processed.parquet
+      hash: md5
+      md5: 72b069128085c2a20131ef4000e88236
+      size: 16646
