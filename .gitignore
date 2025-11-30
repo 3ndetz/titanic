@@ -195,3 +195,6 @@ uv.lock
 
 # my inner docs
 think/
+
+# add all .dvc files
+!*.dvc
