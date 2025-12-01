@@ -12,12 +12,14 @@ stages:
   train:
     cmd: python titanic/modeling/train.py
     deps:
-    - params.yaml
     - titanic/modeling/train.py
     - data/processed/processed.parquet
     params:
-    - train.lr
-    - train.epochs
+    - train.n_estimators
+    - train.max_depth
+    - train.test_size
+    - train.seed
+    - train.pipeline
     outs:
     - models/model.pkl
     - external/submission.csv
