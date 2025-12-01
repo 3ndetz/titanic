@@ -144,6 +144,8 @@ dvc add data/raw/gender_submission.csv
 
 Если захотите затестить, тегните в тг и киньте gmail, добавлю в тестировщики этого google app, чтобы дался доступ, и дам креды.
 
+Теперь `dvc push` сработал. Тяжко, долго, но сработал.
+
 [UPD] Попробовал через сервисный аккаунт Google для большей гибкости, создал его, дал доступ к папке на гугл диске, скачал json с кредами и указал в DVC. Если есть ваш service аккаунт, могу дать доступ к нему. Email можно посмотреть в [консоли](https://console.cloud.google.com/iam-admin/serviceaccounts/).
 
 Креды добавлял так (скачал сначала по [инструкции](https://doc.dvc.org/user-guide/data-management/remote-storage/google-drive#using-service-accounts)):
@@ -154,11 +156,11 @@ dvc remote modify --local gdrive gdrive_service_account_json_file_path C:/Users/
 dvc remote modify --local gdrive gdrive_service_account_user_email my-dvc-project@my-dvc-storage.iam.gserviceaccount.com
 ```
 
-Включил сервисный аккаунт:
+Включить сервисный аккаунт:
 
-`dvc remote modify gdrive gdrive_use_service_account true`
+`dvc remote modify --local gdrive gdrive_use_service_account true`
 
-Теперь `dvc push` сработал. Тяжко, долго, но сработал.
+Но `dvc push` не сработает: `HttpError 403 when requesting None returned "Service Accounts do not have storage quota. Leverage shared drives`, поэтому пока актуален предыдущий подход через oauth app client secret.
 
 ### Подготовка данных
 
