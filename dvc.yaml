@@ -8,3 +8,17 @@ stages:
     - titanic/dataset.py
     outs:
     - data/processed/processed.parquet
+
+  train:
+    cmd: python titanic/modeling/train.py
+    deps:
+    - params.yaml
+    - titanic/modeling/train.py
+    - data/processed/processed.parquet
+    params:
+    - train.lr
+    - train.epochs
+    outs:
+    - models/model.pkl
+    - external/submission.csv
+
