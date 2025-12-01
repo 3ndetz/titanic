@@ -21,6 +21,6 @@ stages:
     - train.seed
     - train.pipeline
     outs:
-    - models/model.pkl
-    - external/submission.csv
+    - data/models/model.pkl
+    - data/external/submission.csv
 
