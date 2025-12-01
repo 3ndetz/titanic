@@ -23,5 +23,4 @@ stages:
     outs:
     - data/models/model.pkl
     metrics:
-    - data/models/metrics.json:
-        cache: false
+    - data/models/metrics.json
