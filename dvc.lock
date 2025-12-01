@@ -33,21 +33,21 @@ stages:
       size: 16646
     - path: titanic/modeling/train.py
       hash: md5
-      md5: a15338938ca41404a5e7d5c969645b0d
-      size: 2824
+      md5: 2c634c849f93691006435e948f5640be
+      size: 3939
     params:
       params.yaml:
         train.max_depth: 10
-        train.n_estimators: 300
+        train.n_estimators: 350
         train.pipeline: random_forest
         train.seed: 1
         train.test_size: 0.2
     outs:
-    - path: data/external/submission.csv
+    - path: data/models/metrics.json
       hash: md5
-      md5: 0be384cc052eb8323e11d19cf58b2d48
-      size: 1247
+      md5: 294ac835264b1c810af1436c40e30544
+      size: 158
     - path: data/models/model.pkl
       hash: md5
-      md5: bf29e63e9939a3a575ffedaa85f76fee
-      size: 2237227
+      md5: a3fc61a74958dbef79ddb9932f5c4ca5
+      size: 2456175
