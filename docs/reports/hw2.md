@@ -144,6 +144,20 @@ dvc add data/raw/gender_submission.csv
 
 Если захотите затестить, тегните в тг и киньте gmail, добавлю в тестировщики этого google app, чтобы дался доступ, и дам креды.
 
+[UPD] Попробовал через сервисный аккаунт Google для большей гибкости, создал его, дал доступ к папке на гугл диске, скачал json с кредами и указал в DVC. Если есть ваш service аккаунт, могу дать доступ к нему. Email можно посмотреть в [консоли](https://console.cloud.google.com/iam-admin/serviceaccounts/).
+
+Креды добавлял так (скачал сначала по [инструкции](https://doc.dvc.org/user-guide/data-management/remote-storage/google-drive#using-service-accounts)):
+
+```bash
+dvc remote modify --local gdrive gdrive_service_account_json_file_path C:/Users/имя-юзера-windows/.gdrive/id-сервисного-аккаунта.json
+
+dvc remote modify --local gdrive gdrive_service_account_user_email my-dvc-project@my-dvc-storage.iam.gserviceaccount.com
+```
+
+Включил сервисный аккаунт:
+
+`dvc remote modify gdrive gdrive_use_service_account true`
+
 Теперь `dvc push` сработал. Тяжко, долго, но сработал.
 
 ### Подготовка данных
