@@ -233,7 +233,7 @@ train:
 
 Теперь можно пробовать эксперименты
 
-`dvc exp run -S train.n_estimators=200`
+`dvc exp run train -S train.n_estimators=200`
 
 ![alt text](images/hw2/image-1.png)
 
@@ -245,3 +245,18 @@ train:
 
 ![alt text](images/hw2/image-3.png)
 
+Попробую сохранить эксперимент для наглядного show. Сделал train c n 300. DVC Дал эксперименту название.
+
+`Reproducing experiment 'girly-rugs'` - название эксперимента
+
+После эксперимента применил его:
+
+`dvc exp apply <experiment_name>` - сохранил последний эксперимент, сделал коммит, dvc push.
+
+Теперь `dvc exp show` показывает различия экспериментов:
+
+![alt text](images/hw2/image-4.png)
+
+TODO: метрики экспериментов
+
+FAR TODO: reports с figures по экспериментам
