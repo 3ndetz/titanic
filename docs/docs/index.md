@@ -9,6 +9,7 @@ Documentation for simple Titanic ML project, solved using advanced engineering p
   - [Description](#description)
   - [Commands](#commands)
   - [Data](#data)
+  - [Troubleshooting](#troubleshooting)
 
 ## Description
 
@@ -27,3 +28,7 @@ The `Makefile` contains the central entry points for common tasks related to thi
 ## [Data](./data.md)
 
 Всё про данные в проекте. Переходите по ссылке и смотрите раздел.
+
+## [Troubleshooting](./troubleshooting.md)
+
+Разбор частых насущных проблем и вопросов при работе с проектом.
