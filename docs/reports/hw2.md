@@ -136,15 +136,13 @@ dvc add data/raw/gender_submission.csv
 
 Следую инструкции. Создал app, сделал credentials, добавил свой email в тестировщики в [audience](https://console.cloud.google.com/auth/audience?project=my-dvc-storage).
 
-За креды не боюсь, т.к. это тестовый проект, и эти клиенты не дают доступ к моему диску, а просто позволяют пользоваться app.
-
 ```bash
 (titanic) C:\Stud\Repos\titanic>dvc remote modify gdrive gdrive_client_id <YOUR_CLIENT_ID>
 
 (titanic) C:\Stud\Repos\titanic>dvc remote modify gdrive gdrive_client_secret <YOUR_CLIENT_SECRET>
 ```
 
-Максимальный риск этих кредов - запороть лимиты на API моего приложения - это всё. Но гугл даже это не позволит - просто не пустит на авторизации (соответственно, если захотите затестить, тегните в тг и киньте gmail, добавлю в тестировщики этого google app, чтобы дался доступ).
+Если захотите затестить, тегните в тг и киньте gmail, добавлю в тестировщики этого google app, чтобы дался доступ, и дам креды.
 
 Теперь `dvc push` сработал. Тяжко, долго, но сработал.
 
