@@ -13,6 +13,14 @@ This section describes the ML modeling process. It covers training procedures, e
 
 `dvc exp run --name my_experiment -S train.n_estimators=200`
 
+Сохранение эксперимента
+
+```bash
+dvc exp apply <experiment_name>
+git add .
+git commit -m "Applied experiment: <experiment_name>"
+```
+
 Для сравнения только что проведедённого эксперимента эксперимент рекомендуется запустить несколько раз с разными параметрами.
 
 Посмотреть сравнительные результаты экспериментов можно командой:
@@ -21,3 +29,10 @@ This section describes the ML modeling process. It covers training procedures, e
 
 [UNIMPLEMENTED] `dvc metrics diff` покажет в упрощённом формате разницу метрик экспериментов.
 
+Удалить ненужные эксперименты
+
+`dvc exp remove <experiment_name>`
+
+Очистить все временные эксперименты
+
+`dvc exp gc --workspace`

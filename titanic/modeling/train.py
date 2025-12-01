@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 import pickle
@@ -6,6 +7,13 @@ from loguru import logger
 from omegaconf import DictConfig, OmegaConf
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import (
+    accuracy_score,
+    f1_score,
+    precision_score,
+    recall_score,
+    roc_auc_score,
+)
 from sklearn.model_selection import train_test_split
 import typer
 
@@ -57,19 +65,20 @@ def train_model():
     processed_data = pd.read_parquet(PROCESSED_DATA_DIR / "processed.parquet")
 
     # Split train and val
-
-    train_data, test_data = train_test_split(
-        processed_data, test_size=test_size, random_state=seed
+    train_data, val_data = train_test_split(
+        processed_data, test_size=test_size, random_state=seed, stratify=processed_data["Survived"]
     )
 
     # Train model
-    y = train_data["Survived"]
+    y_train = train_data["Survived"]
+    y_val = val_data["Survived"]
 
     features = ["Pclass", "Sex", "SibSp", "Parch"]
 
     # Final data before train
-    X = pd.get_dummies(train_data[features])  # noqa: C103
-    X_test = pd.get_dummies(test_data[features])  # noqa: C103
+
+    X_train = pd.get_dummies(train_data[features])  # noqa: C103
+    X_val = pd.get_dummies(val_data[features])  # noqa: C103
 
     # Model init
     model = RandomForestClassifier(
@@ -78,20 +87,46 @@ def train_model():
 
     # Model train
     logger.info("Training the model...")
-    model.fit(X, y)
+    model.fit(X_train, y_train)
+    logger.success("Model training complete.")
 
-    # Inference
-    logger.info("Making predictions on the test set...")
-    predictions = model.predict(X_test)
+    # Model validation
+    logger.info("Making predictions on the validation set...")
+    predictions = model.predict(X_val)
+    probabilities = model.predict_proba(X_val)[:, 1]
+
+    # Calculate metrics
+    metrics = {
+        "accuracy": accuracy_score(y_val, predictions),
+        "f1_score": f1_score(y_val, predictions),
+        "roc_auc": roc_auc_score(y_val, probabilities),
+        "precision": precision_score(y_val, predictions),
+        "recall": recall_score(y_val, predictions),
+    }
+
+    # Сохраняем метрики
+    os.makedirs(MODELS_DIR, exist_ok=True)
+    with open(MODELS_DIR / "metrics.json", "w", encoding="utf-8") as f:
+        json.dump(metrics, f)
+
+    logger.info(f"Metrics: {metrics}")
+
+    # Final predictions for submission
+    # TODO load test data
+    # logger.info("Making predictions on the test set...")
+    # predictions = model.predict(X_test)
 
     # Save model
     logger.info("Saving the model...")
     save_model(model, MODELS_DIR / "model.pkl")
 
+    test_data = None
+
     # Save submission
-    output = pd.DataFrame({"PassengerId": test_data.PassengerId, "Survived": predictions})
-    output.to_csv(EXTERNAL_DATA_DIR / "submission.csv", index=False)
-    logger.success("Final submission was successfully saved!")
+    if test_data is not None:
+        output = pd.DataFrame({"PassengerId": test_data.PassengerId, "Survived": predictions})
+        output.to_csv(EXTERNAL_DATA_DIR / "submission.csv", index=False)
+        logger.success("Final submission was successfully saved!")
 
 
 @app.command()

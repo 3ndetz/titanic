@@ -22,5 +22,6 @@ stages:
     - train.pipeline
     outs:
     - data/models/model.pkl
-    - data/external/submission.csv
-
+    metrics:
+    - data/models/metrics.json:
+        cache: false
