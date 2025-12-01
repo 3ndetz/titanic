@@ -58,6 +58,8 @@ titanic/
 
 ## Загрузка новых данных
 
+Перед любыми манипуляциями с данными нужно активировать окружение и установить зависимости, про это есть в [getting started](./getting-started.md).
+
 Чтобы добавить новые данные в проект, нужно:
 
 1. Положить новые сырые данные `.csv` в папку `data/raw/`.
@@ -66,6 +68,12 @@ titanic/
    2. `data/processed/<new_dataset>_metadata.yaml` - для обработанных данных
    3. Создать pydantic-модель для валидации строк новых данных в `titanic/schema/dataset_schema.py` для комфортной работе в коде.
 3. При необходимости изменить обработку новых данных в `titanic/dataset.py`.
+
+   Сейчас скрипт работает только с `train.csv`, для изменения необходимо изменить `dvc.yaml`:
+
+   в разделе `process_data` добавить к `cmd: python titanic/dataset.py` аргументы-пути к новым данным, например:
+   `cmd: python titanic/dataset.py data/raw/new_dataset.csv data/processed/new_dataset.parquet`.
+
 4. Запустить команду `dvc repro process_data`, чтобы обработать новые данные и сохранить их в `data/processed/`.
 5. Зафиксировать изменения в git, указав название коммита и эксперимента, и сделать dvc push.
 
