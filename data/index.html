@@ -43,6 +43,12 @@
                             <li class="nav-item">
                                 <a href="../getting-started/" class="nav-link">Getting started</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="../modeling/" class="nav-link">Modeling</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../troubleshooting/" class="nav-link">Troubleshooting</a>
+                            </li>
                         </ul>
 
                     <ul class="nav navbar-nav ms-md-auto">
@@ -93,7 +99,11 @@
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#_6" class="nav-link">Версионирование данных</a>
+            <li class="nav-item" data-bs-level="2"><a href="#_6" class="nav-link">Идеальный пайплайн обработки данных</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#_7" class="nav-link">Версионирование данных</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -116,6 +126,7 @@
 </ul>
 </li>
 <li><a href="#загрузка-новых-данных">Загрузка новых данных</a></li>
+<li><a href="#идеальный-пайплайн-обработки-данных">Идеальный пайплайн обработки данных</a></li>
 <li><a href="#версионирование-данных">Версионирование данных</a></li>
 </ul>
 <h2 id="_2">Текущие данные в проекте</h2>
@@ -127,7 +138,7 @@
 │   ├── *.csv           &lt;- Сырые табличные данные
 │   ├── *.dvc           &lt;- Трекер dvc
 │   └── *_metadata.yaml &lt;- Схема данных
-├── external/          &lt;- Данные из сторонних источников
+├── external/          &lt;- Данные из/для сторонних источников
 ├── interim/           &lt;- Промежуточные преобразованные данные
 ├── processed/         &lt;- Обработанные данные для моделей
 │   ├── *.parquet       &lt;- Обработанные табличные данные
@@ -141,7 +152,7 @@
     └── dataset_schema.py &lt;- Pydantic-модели для табличных данных
 </code></pre>
 <p>Во всех этих подпапках, кроме <code>models</code> должны храниться данные.
-В <code>raw</code> допускается <code>csv</code>, в остальных используем <code>parquet</code> для эффективности.</p>
+В <code>raw</code> и <code>external</code> допускается <code>csv</code>, в остальных используем <code>parquet</code> для эффективности.</p>
 <p>Каждый файл данных в папках <code>raw</code> и <code>processed</code> должен иметь рядом файл с метаданными в формате yaml, описывающий схему данных в <a href="https://pandera.readthedocs.io/en/latest/schema_inference.html">pandera</a>-совместимом формате.</p>
 <h3 id="_4">Текущие данные</h3>
 <p>Изначальные сырые данные скачаны вручную из <a href="https://www.kaggle.com/competitions/titanic/data">Kaggle</a> и помещены в <code>data/raw/</code>.</p>
@@ -150,6 +161,7 @@
 </blockquote>
 <p>Далее с данными была проведена работа, см. раздел ниже.</p>
 <h2 id="_5">Загрузка новых данных</h2>
+<p>Перед любыми манипуляциями с данными нужно активировать окружение и установить зависимости, про это есть в <a href="../getting-started/">getting started</a>.</p>
 <p>Чтобы добавить новые данные в проект, нужно:</p>
 <ol>
 <li>Положить новые сырые данные <code>.csv</code> в папку <code>data/raw/</code>.</li>
@@ -158,10 +170,27 @@
 <li><code>data/processed/&lt;new_dataset&gt;_metadata.yaml</code> - для обработанных данных</li>
 <li>Создать pydantic-модель для валидации строк новых данных в <code>titanic/schema/dataset_schema.py</code> для комфортной работе в коде.</li>
 <li>При необходимости изменить обработку новых данных в <code>titanic/dataset.py</code>.</li>
+</ol>
+<p>Сейчас скрипт работает только с <code>train.csv</code>, для изменения необходимо изменить <code>dvc.yaml</code>:</p>
+<p>в разделе <code>process_data</code> добавить к <code>cmd: python titanic/dataset.py</code> аргументы-пути к новым данным, например:
+   <code>cmd: python titanic/dataset.py data/raw/new_dataset.csv data/processed/new_dataset.parquet</code>.</p>
+<ol>
 <li>Запустить команду <code>dvc repro process_data</code>, чтобы обработать новые данные и сохранить их в <code>data/processed/</code>.</li>
 <li>Зафиксировать изменения в git, указав название коммита и эксперимента, и сделать dvc push.</li>
 </ol>
-<h2 id="_6">Версионирование данных</h2>
+<h2 id="_6">Идеальный пайплайн обработки данных</h2>
+<ol>
+<li>Сырые данные кладутся в <code>data/raw/</code>.</li>
+<li>Запускается пайплайн клининга данных, и они попадают в <code>data/interim/</code>.
+   Сейчас этот этап пропущен.</li>
+<li>Генерим новые фичи, и они попадают в <code>data/features/</code>.
+   Сейчас этот этап пропущен.</li>
+<li>Соединяем все данные, энкодируем, в общем готовим к финальному обучению моделей, и кладём в <code>data/processed/</code>.</li>
+<li>Обучаем модели на обработанных данных, сохраняем чекпоинты в <code>data/models/</code>.</li>
+<li>Делаем предсказания на тестовых данных и сохраняем результаты в <code>data/external/</code>.
+   Сейчас этот этап пропущен.</li>
+</ol>
+<h2 id="_7">Версионирование данных</h2>
 <p>Данные версионируются с помощью DVC, подключенному к приложению Google Drive. Для доступа к этому диску сообщите разработчику gmail-почту, и тогда сможете пройти oauth при <code>dvc pull</code>.</p>
 <p>Соответственно, <code>dvc pull</code> подтянет все данные из удалённого хранилища.</p></div>
             </div>
