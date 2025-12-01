@@ -185,3 +185,61 @@ dvc remote modify --local gdrive gdrive_service_account_user_email my-dvc-projec
 Делаем коммит в гит и `dvc push`, всё фиксируем.
 
 Обновил доку по данным, добавил рекомендации по текущему API.
+
+-----
+
+Небольшая критика
+
+Держу в голове, что в `data/` папки interim, features, external хоть и есть, но их пока не испорльзую, т.к. пока что сильно оверкилл, поэтому сразу делал из raw в processed. В идеале сначала нужно было сделать клининг и энкодинг, закинуть в interim, потом фичи, датасеты с фичами в features. Потом уже в processed. Но сейчас наш скрипт сразу готовит данные для модели.
+
+Также можно было добавить автоотчёты и фигурки по данным, как-то связать всё с версией релиза.
+
+### Версионирование моделей
+
+Подготовил train скрипт, конфиг через omegaconf, лежит в `params.yaml`.
+Разделение датасета, обучение модели, сохранение модели, сабмишен.
+
+`params.yaml`
+
+```yaml
+train:
+  n_estimators: 100
+  max_depth: 10
+  test_size: 0.2
+  seed: 1
+  pipeline: "random_forest"
+```
+
+Добавил в `dvc.yaml` этап тренировки модели (вручную вписал в файл):
+
+```yaml
+  train:
+    cmd: python titanic/modeling/train.py
+    deps:
+    - titanic/modeling/train.py
+    - data/processed/processed.parquet
+    params:
+    - train.n_estimators
+    - train.max_depth
+    - train.test_size
+    - train.seed
+    - train.pipeline
+    outs:
+    - data/models/model.pkl
+    - data/external/submission.csv
+```
+
+Теперь можно пробовать эксперименты
+
+`dvc exp run -S train.n_estimators=200`
+
+![alt text](images/hw2/image-1.png)
+
+`dvc exp show`
+
+![alt text](images/hw2/image-2.png)
+
+`dvc dag`
+
+![alt text](images/hw2/image-3.png)
+

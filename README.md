@@ -17,8 +17,6 @@ Solving simple titanic competition using advanced engineering practices
 ├── docs               <- A default mkdocs project
 │   └── reports        <- Course reports
 │
-├── models             <- Trained and serialized models, model predictions, or model summaries
-│
 ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
 │                         the creator's initials, and a short `-` delimited description, e.g.
 │                         `1.0-jqp-initial-data-exploration`.
@@ -32,21 +30,6 @@ Solving simple titanic competition using advanced engineering practices
 │   └── figures        <- Generated graphics and figures to be used in reporting
 │
 └── titanic   <- Source code for use in this project.
-    │
-    ├── __init__.py             <- Makes titanic a Python module
-    │
-    ├── config.py               <- Store useful variables and configuration
-    │
-    ├── dataset.py              <- Scripts to download or generate data
-    │
-    ├── features.py             <- Code to create features for modeling
-    │
-    ├── modeling                
-    │   ├── __init__.py 
-    │   ├── predict.py          <- Code to run model inference with trained models          
-    │   └── train.py            <- Code to train models
-    │
-    └── plots.py                <- Code to create visualizations
 ```
 
 --------
