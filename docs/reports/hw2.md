@@ -289,4 +289,14 @@ train:
 
 Закоммитил, запушил, `dvc push`.
 
+DVC VS Code Extension скриншот окна Experiments (в окне команд VSC Надо ввести `>DVC Show Experiments`):
+
+![alt text](images/hw2/image-10.png)
+
+Ради интереса, посмотрим на хранилище dvc на гугл диске.
+
+![alt text](images/hw2/image-9.png)
+
+Раньше было всего 2 папки, теперь их 9.
+
 FAR TODO: add reports с figures по экспериментам
