@@ -190,7 +190,7 @@ dvc remote modify --local gdrive gdrive_service_account_user_email my-dvc-projec
 
 Обновил доку по данным, добавил рекомендации по текущему API.
 
------
+--------------------------------------
 
 Небольшая критика
 

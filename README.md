@@ -61,7 +61,7 @@ Solving simple titanic competition using advanced engineering practices
 
 1. [x] [HW 1](./docs/reports/hw1_initial.md)
 2. [x] [HW 2](./docs/reports/hw2.md)
-3. [ ] HW 3
+3. [x] HW 3
 4. [ ] HW 4
 5. [ ] HW 5
 6. [ ] HW 6
