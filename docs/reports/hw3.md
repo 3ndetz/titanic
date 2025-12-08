@@ -70,29 +70,31 @@
 Добавил параметры, обновил конфиг.
 Теперь проведём ряд экспериментов (15)
 
-```bash
-dvc exp run train --name rf_1 -S train.pipeline=random_forest 
-dvc exp run train --name rf_2 -S train.pipeline=random_forest -S train.n_estimators=10 -S train.max_depth=5
-dvc exp run train --name rf_3 -S train.pipeline=random_forest -S train.n_estimators=10 -S train.max_depth=5
+Между сменой пайплайнов в neural_network и между другими надо очищать коммит `params.yaml` от dvc.
 
-dvc exp run train --name rf_4_bad -S train.pipeline=random_forest -S test_size=0.5
-dvc exp run train --name rf_5_bad -S train.pipeline=random_forest -S test_size=0.9
+```bash
+dvc exp run train --name rf_1 -S train.pipeline=random_forest
+dvc exp run train --name rf_2 -S train.pipeline=random_forest -S train.n_estimators=10 -S train.max_depth=5
+dvc exp run train --name rf_3_fix -S train.pipeline=random_forest -S train.n_estimators=15 -S train.max_depth=10
+
+dvc exp run train --name rf_4_bad -S train.pipeline=random_forest -S train.test_size=0.5
+dvc exp run train --name rf_5_bad -S train.pipeline=random_forest -S train.test_size=0.9
 
 
 dvc exp run train --name nn_1 -S train.pipeline=neural_network
-dvc exp run train --name nn_2 -S train.pipeline=neural_network -S train.x_size=150 -S train.y_size=75
-dvc exp run train --name nn_3 -S train.pipeline=neural_network -S train.x_size=200 -S train.y_size=100
+dvc exp run train --name nn_2_fix2 -S train.pipeline=neural_network -S train.x_size=150 -S train.y_size=100 -S train.n_estimators=10 -S train.max_depth=5
+dvc exp run train --name nn_2_test2 -S train.pipeline=neural_network -S train.x_size=150 -S train.y_size=100 -S train.n_estimators=10 -S train.max_depth=5
 
-dvc exp run train --name nn_4_bad -S train.pipeline=neural_network -S test_size=0.5
-dvc exp run train --name nn_5_bad -S train.pipeline=neural_network -S test_size=0.9
+dvc exp run train --name nn_4_bad -S train.pipeline=neural_network -S train.test_size=0.5
+dvc exp run train --name nn_5_bad -S train.pipeline=neural_network -S train.test_size=0.9
 
 
 dvc exp run train --name gb_1 -S train.pipeline=gradient_boosting -S train.n_estimators=10 -S train.max_depth=5
 dvc exp run train --name gb_2 -S train.pipeline=gradient_boosting -S train.n_estimators=50 -S train.max_depth=10
 dvc exp run train --name gb_3 -S train.pipeline=gradient_boosting -S train.n_estimators=100 -S train.max_depth=15
 
-dvc exp run train --name gb_4_bad -S train.pipeline=gradient_boosting -S test_size=0.5
-dvc exp run train --name gb_5_bad -S train.pipeline=gradient_boosting -S test_size=0.9
+dvc exp run train --name gb_4_bad -S train.pipeline=gradient_boosting -S train.test_size=0.5
+dvc exp run train --name gb_5_bad -S train.pipeline=gradient_boosting -S train.test_size=0.9
 ```
 
 DVC VS Code Extension скриншот окна Experiments (в окне команд VSC Надо ввести `>DVC Show Experiments`)
