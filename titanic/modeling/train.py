@@ -71,8 +71,8 @@ def train_model():
     elif params.train.pipeline == "neural_network":
         logger.info("Chosen neural network pipeline")
         model = MLPClassifier(
-            hidden_layer_sizes=(100, 50),
-            max_iter=1000,
+            hidden_layer_sizes=(params.train.x_size, params.train.y_size),
+            max_iter=params.train.max_iter,
             random_state=seed,
         )
     else:
