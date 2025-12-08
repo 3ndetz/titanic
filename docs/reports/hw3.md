@@ -97,14 +97,34 @@ dvc exp run train --name gb_4_bad -S train.pipeline=gradient_boosting -S train.t
 dvc exp run train --name gb_5_bad -S train.pipeline=gradient_boosting -S train.test_size=0.9
 ```
 
-![alt text](images/hw3/image-2.png)
-
-
-
 DVC VS Code Extension скриншот окна Experiments (в окне команд VSC Надо ввести `>DVC Show Experiments`)
 
-Выбираем лучший эксперимент и применяем
+![alt text](images/hw3/image-2.png)
+
+![alt text](images/hw3/image-3.png)
+
+![alt text](images/hw3/image-4.png)
+
+В идеале (в реальности дальше как действуем): на основе метрик выбираем лучший эксперимент и применяем
 
 `dvc exp apply <experiment_id>`
 
 Закоммитил, запушил, `dvc push`.
+
+Сравнение метрик с изначальными
+
+```text
+(titanic) C:\Stud\Repos\titanic>dvc metrics diff
+Path                      Metric     HEAD     workspace    Change
+data\models\metrics.json  accuracy   0.77778  0.72444      -0.05334
+data\models\metrics.json  f1_score   0.67742  0.62606      -0.05136
+data\models\metrics.json  precision  0.77778  0.65371      -0.12407
+data\models\metrics.json  recall     0.6      0.60065      0.00065
+data\models\metrics.json  roc_auc    0.79896  0.70975      -0.08921
+```
+
+`dvc exp show` у меня в консоли криво отображается на винде
+
+![alt text](images/hw2/image-11.png)
+
+Фильтрация, сравнение метрик происходит удобно в этом окне DVC. Интеграция с кодом была ранее сделана через omegaconf и params yaml. Логирование метрик DVC проводит сам.
