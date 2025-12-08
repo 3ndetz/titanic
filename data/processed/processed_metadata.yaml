@@ -1,0 +1,55 @@
+schema_type: dataframe
+version: 0.27.0
+columns:
+  PassengerId:
+    dtype: int
+    description: Unique ID for each passenger
+    nullable: false
+  Survived:
+    dtype: int
+    description: Survival (0 = No, 1 = Yes)
+    checks:
+      in_range:
+        min_value: 0
+        max_value: 1
+    nullable: false
+  Pclass:
+    dtype: int
+    description: Ticket class (1 = 1st, 2 = 2nd, 3 = 3rd)
+    checks:
+      in_range:
+        min_value: 1
+        max_value: 3
+    nullable: false
+  Sex:
+    dtype: int
+    description: Encoded Gender (0 male/1 female)
+    checks:
+      in_range:
+        min_value: 0
+        max_value: 1
+    nullable: false
+  Age:
+    dtype: float
+    description: Age in years
+    nullable: false
+  SibSp:
+    dtype: int
+    description: Number of siblings/spouses aboard, братьев сестер на борту
+    nullable: false
+  Parch:
+    dtype: int
+    description: Number of parents/children aboard
+    nullable: false
+  FamilySize:
+    dtype: int
+    description: Number of family members aboard (siblings/spouses + parents/children)
+    nullable: false
+  Fare:
+    dtype: float
+    description: Passenger fare, стоимость билета
+    nullable: false
+  Embarked:
+    dtype: float
+    description: Port of embarkation, encoded (0 = C = Cherbourg France, 1 = Q = Queenstown Ireland, 2 = Southampton England)
+    nullable: false

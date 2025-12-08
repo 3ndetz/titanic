@@ -1,0 +1,26 @@
+stages:
+  process_data:
+    cmd: python titanic/dataset.py
+    deps:
+    - data/raw/train.csv
+    - data/raw/train_metadata.yaml
+    - data/processed/processed_metadata.yaml
+    - titanic/dataset.py
+    outs:
+    - data/processed/processed.parquet
+
+  train:
+    cmd: python titanic/modeling/train.py
+    deps:
+    - titanic/modeling/train.py
+    - data/processed/processed.parquet
+    params:
+    - train.n_estimators
+    - train.max_depth
+    - train.test_size
+    - train.seed
+    - train.pipeline
+    outs:
+    - data/models/model.pkl
+    metrics:
+    - data/models/metrics.json
