@@ -41,13 +41,13 @@ stages:
         train.n_estimators: 10
         train.pipeline: neural_network
         train.seed: 1
-        train.test_size: 0.5
+        train.test_size: 0.1
     outs:
     - path: data/models/metrics.json
       hash: md5
-      md5: f1721573ff5797552e1a99cb56555471
-      size: 145
+      md5: fee732862b090e7dd6592ec09586a8d6
+      size: 142
     - path: data/models/model.pkl
       hash: md5
-      md5: 21d1ebacb2483e41c76abf306f41b4e1
-      size: 521915
+      md5: 1cd86fb2494e8e41bc23d264d025d9d8
+      size: 518758
