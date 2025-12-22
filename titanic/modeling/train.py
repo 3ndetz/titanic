@@ -19,6 +19,7 @@ from sklearn.neural_network import MLPClassifier
 import typer
 
 from titanic.config import EXTERNAL_DATA_DIR, MODELS_DIR, PROCESSED_DATA_DIR, PROJ_ROOT
+from titanic.schema.params_schema import Config
 
 app = typer.Typer()
 
@@ -26,6 +27,14 @@ app = typer.Typer()
 def load_params(params_path: Path = Path(PROJ_ROOT / "params.yaml")) -> DictConfig:
     """Load parameters from a YAML file using OmegaConf."""
     return OmegaConf.load(params_path)
+
+
+def validate_params(params: DictConfig) -> DictConfig:
+    """Validate parameters using the schema defined in params_schema.py."""
+    # Convert DictConfig to dict for Pydantic validation
+    params_dict = OmegaConf.to_container(params)
+    validated_params = Config(**params_dict)
+    return validated_params
 
 
 def save_model(model, model_path: Path):
@@ -48,7 +57,8 @@ def train_model():
     """
     # Load experiment params
     params = load_params()
-
+    validate_params(params)
+    logger.info("Parameters loaded, schema valid.")
     # Universal params
     seed = params.train.seed
     test_size = params.train.test_size
