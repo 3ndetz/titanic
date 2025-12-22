@@ -115,4 +115,36 @@
 
 Для красоты сделаем более хорошую валидацию конфигов.
 
-Можем для совсем уж красоты обновить контейнер в докере под воспроизводимость последней версии пайплайна.
+Внёс коммит и добавил валидацию параметров через Pydantic (Union для пайплайнов).
+`titanic/schema/params_schema.py`
+Обновил train.py для использования этой валидации, добавил принт.
+
+Закоммитил.
+
+Результаты:
+
+всё ок
+
+![alt text](images/hw4/image.png)
+
+Ошибка валидации (neural_neWork указал в пайплайне)
+
+![alt text](images/hw4/image-1.png)
+
+![alt text](images/hw4/image-2.png)
+
+![alt text](images/hw4/image-3.png)
+
+![alt text](images/hw4/image-4.png)
+
+![alt text](images/hw4/image-5.png)
+
+![alt text](images/hw4/image-6.png)
+
+Подпробуем сложнее: укажем test_size = 10
+
+Как и ожидалось, ошибка:
+
+![alt text](images/hw4/image-7.png)
+
+Всё супер!
