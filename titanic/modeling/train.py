@@ -20,6 +20,7 @@ import typer
 
 from titanic.config import EXTERNAL_DATA_DIR, MODELS_DIR, PROCESSED_DATA_DIR, PROJ_ROOT
 from titanic.schema.params_schema import Config
+from titanic.utils import log_execution, log_stage
 
 app = typer.Typer()
 
@@ -51,6 +52,7 @@ def load_saved_model(model_path: Path) -> RandomForestClassifier:
     return model
 
 
+@log_execution
 def train_model():
     """
     Train a machine learning model based on the provided parameters.
@@ -88,43 +90,44 @@ def train_model():
     else:
         raise ValueError(f"Unsupported pipeline: {params.train.pipeline}")
 
-    # Load data
-    processed_data = pd.read_parquet(PROCESSED_DATA_DIR / "processed.parquet")
+    with log_stage("Data Loading"):
+        processed_data = pd.read_parquet(PROCESSED_DATA_DIR / "processed.parquet")
 
-    # Split train and val
-    train_data, val_data = train_test_split(
-        processed_data, test_size=test_size, random_state=seed, stratify=processed_data["Survived"]
-    )
+        # Split train and val
+        train_data, val_data = train_test_split(
+            processed_data,
+            test_size=test_size,
+            random_state=seed,
+            stratify=processed_data["Survived"],
+        )
 
-    # Train model
-    y_train = train_data["Survived"]
-    y_val = val_data["Survived"]
+        # Train model
+        y_train = train_data["Survived"]
+        y_val = val_data["Survived"]
 
-    features = ["Pclass", "Sex", "SibSp", "Parch"]
+        features = ["Pclass", "Sex", "SibSp", "Parch"]
 
-    # Final data before train
+        # Final data before train
 
-    X_train = pd.get_dummies(train_data[features])  # noqa: C103
-    X_val = pd.get_dummies(val_data[features])  # noqa: C103
+        X_train = pd.get_dummies(train_data[features])  # noqa: C103
+        X_val = pd.get_dummies(val_data[features])  # noqa: C103
 
-    # Model train
-    logger.info("Training the model...")
-    model.fit(X_train, y_train)
-    logger.success("Model training complete.")
+    with log_stage("Model Training"):
+        model.fit(X_train, y_train)
 
     # Model validation
-    logger.info("Making predictions on the validation set...")
-    predictions = model.predict(X_val)
-    probabilities = model.predict_proba(X_val)[:, 1]
+    with log_stage("Model Evaluation"):
+        predictions = model.predict(X_val)
+        probabilities = model.predict_proba(X_val)[:, 1]
 
-    # Calculate metrics
-    metrics = {
-        "accuracy": accuracy_score(y_val, predictions),
-        "f1_score": f1_score(y_val, predictions),
-        "roc_auc": roc_auc_score(y_val, probabilities),
-        "precision": precision_score(y_val, predictions),
-        "recall": recall_score(y_val, predictions),
-    }
+        # Calculate metrics
+        metrics = {
+            "accuracy": accuracy_score(y_val, predictions),
+            "f1_score": f1_score(y_val, predictions),
+            "roc_auc": roc_auc_score(y_val, probabilities),
+            "precision": precision_score(y_val, predictions),
+            "recall": recall_score(y_val, predictions),
+        }
 
     # Сохраняем метрики
     os.makedirs(MODELS_DIR, exist_ok=True)
@@ -139,8 +142,8 @@ def train_model():
     # predictions = model.predict(X_test)
 
     # Save model
-    logger.info("Saving the model...")
-    save_model(model, MODELS_DIR / "model.pkl")
+    with log_stage("Saving Model"):
+        save_model(model, MODELS_DIR / "model.pkl")
 
     test_data = None
 
