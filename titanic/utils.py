@@ -22,7 +22,7 @@ def log_execution(func):
         try:
             result = func(*args, **kwargs)
             elapsed = time() - start
-            logger.info(f"Completed: {func.__name__} ({elapsed:.2f}s)")
+            logger.success(f"Completed: {func.__name__} ({elapsed:.2f}s)")
             return result
         except Exception as e:
             logger.error(f"Failed: {func.__name__} - {e}")
