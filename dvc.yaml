@@ -20,6 +20,9 @@ stages:
     - train.test_size
     - train.seed
     - train.pipeline
+    - train.x_size
+    - train.y_size
+    - train.max_iter
     outs:
     - data/models/model.pkl
     metrics:

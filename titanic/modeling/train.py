@@ -6,7 +6,7 @@ import pickle
 from loguru import logger
 from omegaconf import DictConfig, OmegaConf
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 from sklearn.metrics import (
     accuracy_score,
     f1_score,
@@ -15,6 +15,7 @@ from sklearn.metrics import (
     roc_auc_score,
 )
 from sklearn.model_selection import train_test_split
+from sklearn.neural_network import MLPClassifier
 import typer
 
 from titanic.config import EXTERNAL_DATA_DIR, MODELS_DIR, PROCESSED_DATA_DIR, PROJ_ROOT
@@ -52,14 +53,30 @@ def train_model():
     seed = params.train.seed
     test_size = params.train.test_size
 
-    # Now support only random forest pipeline
+    # Now support random forest, gradient boosting and neural network pipelines
     if params.train.pipeline == "random_forest":
         logger.info("Chosen random forest pipeline")
+        model = RandomForestClassifier(
+            n_estimators=params.train.n_estimators,
+            max_depth=params.train.max_depth,
+            random_state=seed,
+        )
+    elif params.train.pipeline == "gradient_boosting":
+        logger.info("Chosen gradient boosting pipeline")
+        model = GradientBoostingClassifier(
+            n_estimators=params.train.n_estimators,
+            max_depth=params.train.max_depth,
+            random_state=seed,
+        )
+    elif params.train.pipeline == "neural_network":
+        logger.info("Chosen neural network pipeline")
+        model = MLPClassifier(
+            hidden_layer_sizes=(params.train.x_size, params.train.y_size),
+            max_iter=params.train.max_iter,
+            random_state=seed,
+        )
     else:
         raise ValueError(f"Unsupported pipeline: {params.train.pipeline}")
-
-    n_estimators = params.train.n_estimators
-    max_depth = params.train.max_depth
 
     # Load data
     processed_data = pd.read_parquet(PROCESSED_DATA_DIR / "processed.parquet")
@@ -79,11 +96,6 @@ def train_model():
 
     X_train = pd.get_dummies(train_data[features])  # noqa: C103
     X_val = pd.get_dummies(val_data[features])  # noqa: C103
-
-    # Model init
-    model = RandomForestClassifier(
-        n_estimators=n_estimators, max_depth=max_depth, random_state=seed
-    )
 
     # Model train
     logger.info("Training the model...")
