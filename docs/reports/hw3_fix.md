@@ -31,4 +31,8 @@
 
 Сделал log_execution декоратор и log_stage менеджер.
 
-Внедрил в `titanic/modeling/train.py`.
+Внедрил в `titanic/modeling/train.py` (добавил и то, и другое в функции в коде).
+
+Запустил `dvc exp run train --name hw3_fix_rf_1_test3 -S train.pipeline=random_forest -S train.max_depth=7`: в консоли видим, что всё окей, видим также удобные логи времени выполнения.
+
+![alt text](images/hw3_fix/image.png)
