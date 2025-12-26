@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from clearml import Task
 from loguru import logger
 import pandas as pd
 import pandera as pa
@@ -9,6 +10,8 @@ import typer
 
 from titanic.config import PROCESSED_DATA_DIR, RAW_DATA_DIR
 from titanic.schema.dataset_schema import ProcessedTitanicRow, RawTitanicRow
+
+# auto_connect_frameworks=False, чтобы он не пытался искать модели sklearn там, где их нет.
 
 
 def load_csv(path: Path) -> pd.DataFrame:
@@ -149,7 +152,12 @@ def main(
     """
     Process the Titanic dataset.
     """
+    # task: Task =
+    Task.init(project_name="Titanic_HW", task_name="process_data", auto_connect_frameworks=False)
     prepare_dataset(input_path, output_path)
+    # task сам закроется при выходе со скрипта, но лучше явно закрыть
+    # task.close()
+    # Уберём т.к. ломает pipeline
 
 
 if __name__ == "__main__":

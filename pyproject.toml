@@ -16,6 +16,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License"
 ]
 dependencies = [
+    "clearml~=2.1.0",
     "dvc>=3.64.0",
     "dvc-gdrive>=3.0.1",
     "loguru==0.7.3",
