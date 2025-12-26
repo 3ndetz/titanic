@@ -9,6 +9,7 @@ on:
       - final
     paths:
       - 'docs/**'
+  workflow_dispatch:  # Позволяет запустить вручную из интерфейса GitHub
 
 permissions:
   contents: write
