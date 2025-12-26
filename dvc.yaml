@@ -27,3 +27,13 @@ stages:
     - data/models/model.pkl
     metrics:
     - data/models/metrics.json
+
+plots:
+  - dvclive/plots/metrics:
+      x: step
+      y: accuracy
+      title: Accuracy vs. Step
+  - dvclive/plots/metrics:
+      x: step
+      y: f1
+      title: F1-score vs. Step

@@ -5,6 +5,7 @@ import pickle
 
 from clearml import Logger as ClearMLLogger
 from clearml import Task
+from dvclive import Live
 
 # Алиас, чтобы не конфликтовало с loguru
 from loguru import logger
@@ -62,9 +63,11 @@ def train_model():
     Train a machine learning model based on the provided parameters.
     """
     # Load experiment params
+    live = Live(save_dvc_exp=True, report="md")
     params = load_params()
     validate_params(params)
     logger.info("Parameters loaded, schema valid.")
+    live.log_params(params)
     task = Task.init(
         project_name="Titanic_HW", task_name="Train_Model", auto_connect_frameworks=True
     )
@@ -138,6 +141,7 @@ def train_model():
         }
         cl_logger = ClearMLLogger.current_logger()
         for metric_name, value in metrics.items():
+            live.log_metric(metric_name, value)
             cl_logger.report_scalar(
                 title="Evaluation Metrics",  # Название графика
                 series=metric_name,  # Название линии (accuracy, f1...)
