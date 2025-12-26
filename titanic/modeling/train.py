@@ -67,7 +67,7 @@ def train_model():
     params = load_params()
     validate_params(params)
     logger.info("Parameters loaded, schema valid.")
-    live.log_params(params)
+    live.log_params(params["train"])
     task = Task.init(
         project_name="Titanic_HW", task_name="Train_Model", auto_connect_frameworks=True
     )
