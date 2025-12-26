@@ -7,7 +7,7 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
-          paths: [../titanic]
+          paths: [..]
           options:
             show_root_heading: true
             show_source: true
