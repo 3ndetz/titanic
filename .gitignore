@@ -11,7 +11,7 @@
 .dvc/config.local
 .dvc/tmp
 .dvc/cache
-
+dvclive/
 
 # Mac OS-specific storage files
 .DS_Store
