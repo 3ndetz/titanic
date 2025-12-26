@@ -152,12 +152,12 @@ def main(
     """
     Process the Titanic dataset.
     """
-    task: Task = Task.init(
-        project_name="Titanic_HW", task_name="process_data", auto_connect_frameworks=False
-    )
+    # task: Task =
+    Task.init(project_name="Titanic_HW", task_name="process_data", auto_connect_frameworks=False)
     prepare_dataset(input_path, output_path)
     # task сам закроется при выходе со скрипта, но лучше явно закрыть
-    task.close()
+    # task.close()
+    # Уберём т.к. ломает pipeline
 
 
 if __name__ == "__main__":

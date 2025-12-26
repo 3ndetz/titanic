@@ -166,6 +166,7 @@ task.close()
 ![alt text](images/hw5/image-3.png)
 
 Правда, долго, секунд 20. Но работает.
+UPD: пофиксил, т.к. на винде localhost видимо бьётся куда-то в ipv6, в общем выставил в user/clearml.conf вместо localhost 127.0.0.1.
 
 #### Интеграция в код
 
@@ -183,7 +184,50 @@ task.close()
 
 dvc repro
 
+![alt text](images/hw5/image-4.png)
+
+Ага, всё есть. Видим метрики, артефакты, модели.
+
+![alt text](images/hw5/image-5.png)
+
+![alt text](images/hw5/image-6.png)
+
+![alt text](images/hw5/image-7.png)
+
+Процесс data тоже видим
+
+![alt text](images/hw5/image-8.png)
+
+Пойдём фигачить эксперименты.
+
 dvc exp run train --name hw5_rf_3_fix -S train.pipeline=random_forest -S train.n_estimators=15 -S train.max_depth=10
 dvc exp run train --name hw5_rf_4_bad -S train.pipeline=random_forest -S train.test_size=0.5
 dvc exp run train --name hw5_nn_3_test3 -S train.pipeline=neural_network -S train.x_size=150 -S train.y_size=200
 dvc exp run train --name hw5_nn_4_bad -S train.pipeline=neural_network -S train.test_size=0.5
+
+Теперь смотрим в CML.
+
+![alt text](images/hw5/image-9.png)
+
+Сравним эксперименты и их метрики:
+
+![alt text](images/hw5/image-10.png)
+
+Таким образом, у нас сейчас:
+
+- Настроен clearml, проект, эксперименты, аутентификация
+- Интегрирован clearml в код, настроено логирование метрик, параметров, выгрузка артефактов (моделей), видим и можем создавать простенькие дашборды.
+- Модели тоже выгружаются и прикрепляются к эксперименту, им соответствуют их метрики и все метаданные типа параметров. ClearML также сам создаёт для них версии и позволяет сравнивать.
+
+Теперь займёмся пайплайном.
+
+#### ClearML Pipeline
+
+Создадим файл `clearml_pipeline.py` в корне репки.
+Сделаем по-минимуму, просто чтобы запускался весь пайплайн и всё работало согласно заданию:
+
+![alt text](images/hw5/image-11.png)
+
+Пайплайн создан, автоматически запускается 1 командой, мониторится в ClearML, видим статусы выполнения и можем удобно посмотреть любой из этапов. Уведомления видим в консоли (цветом показывается как успешное выполнение, так и ошибки т.к. наши логи никуда не ушли) + ClearML тоже подсвечивает статусы и обновляет всё.
+
+Таким образом, задача выполнена, цели всех задач достигнуты. Сильно углубляться в CML на этом этапе смысла нет, так как весь основной пайплайн уже здесь идёт удобно через DVC, ClearML просто как небольшое удобное дополнение.
