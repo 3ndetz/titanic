@@ -23,7 +23,7 @@ jobs:
         uses: Tiryoh/actions-mkdocs@v0
         with:
           # mkdocs_version: 'latest' # option
-          mkdocs_version: '1.5.3' # option
+          # mkdocs_version: '1.5.3' # option
           requirements: 'docs/requirements.txt' # option
           configfile: 'docs/mkdocs.yml' # option
       - name: Deploy
