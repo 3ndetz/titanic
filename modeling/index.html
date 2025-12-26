@@ -87,6 +87,10 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-level="2"><a href="#_2" class="nav-link">Мониторинг экспериментов</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
               </ul>
             </li>
         </ul>
@@ -107,14 +111,20 @@
 git add .
 git commit -m &quot;Applied experiment: &lt;experiment_name&gt;&quot;
 </code></pre>
-<p>Для сравнения только что проведедённого эксперимента эксперимент рекомендуется запустить несколько раз с разными параметрами.</p>
-<p>Посмотреть сравнительные результаты экспериментов можно командой:</p>
-<p><code>dvc exp show</code></p>
-<p>[UNIMPLEMENTED] <code>dvc metrics diff</code> покажет в упрощённом формате разницу метрик экспериментов.</p>
 <p>Удалить ненужные эксперименты</p>
 <p><code>dvc exp remove &lt;experiment_name&gt;</code></p>
 <p>Очистить все временные эксперименты</p>
-<p><code>dvc exp gc --workspace</code></p></div>
+<p><code>dvc exp gc --workspace</code></p>
+<h2 id="_2">Мониторинг экспериментов</h2>
+<p>Для сравнения только что проведедённого эксперимента эксперимент рекомендуется запустить несколько раз с разными параметрами.</p>
+<p>Посмотреть сравнительные результаты экспериментов можно командой:</p>
+<p><code>dvc exp show</code></p>
+<p><code>dvc metrics diff</code> покажет в упрощённом формате разницу метрик экспериментов.</p>
+<p>Если есть Visual Studio Code, можно установить <a href="https://marketplace.visualstudio.com/items?itemName=Iterative.dvc">DVC Extension</a> и использовать его для удобного просмотра экспериментов.</p>
+<p>Подробнее можно посмотреть в документации расширения.</p>
+<p>Например, можно вызвать удобное окно экспериментов, где можно сразу строить графики:</p>
+<p><code>&gt;dvc show experiments</code></p>
+<p>(команда вводится в командной палитре VS Code)</p></div>
             </div>
         </div>
 
