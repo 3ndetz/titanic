@@ -2,3 +2,12 @@ site_name: titanic
 # 
 site_author: 3ndetz
 # 
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [titanic]
+          options:
+            show_root_heading: true
+            show_source: true

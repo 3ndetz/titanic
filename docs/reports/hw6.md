@@ -79,6 +79,8 @@
     * Настроить автоматическую сборку документации
       * Есть, mkdocs gh-deploy уже работает
 
+### Github Actions mkdocs deploy
+
 Приступаем к выполнению. Начнём с gh actions. Потом сделаем пример авто-отчёта по эксперименту.
 
 Добавил CI по [примеру](https://github.com/marketplace/actions/mkdocs-action), настроил его под наш репо. Закоммитил.
@@ -94,3 +96,9 @@
 ![alt text](images/hw6/image-2.png)
 
 Отлично, всё работает! Идём дальше.
+
+### Code API Reference Auto-gen
+
+Добавил плагин mkdocstrings-python в mkdocs.yml и поставил зависимость в pyproject.toml. Добавил docs/docs/api/index.md для автогенерации референсов на основе докстрингов в коде.
+
+![alt text](images/hw6/image-3.png)
