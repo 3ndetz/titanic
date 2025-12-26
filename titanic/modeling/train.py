@@ -125,6 +125,10 @@ def train_model():
 
         X_train = pd.get_dummies(train_data[features])  # noqa: C103
         X_val = pd.get_dummies(val_data[features])  # noqa: C103
+    with log_stage("Model Training"):
+        model.fit(X_train, y_train)
+
+    with log_stage("Generating Evaluation Plots"):
         # Рисуем ROC Curve
         RocCurveDisplay.from_estimator(model, X_val, y_val)
         plt.savefig("roc_curve.png")
@@ -134,9 +138,6 @@ def train_model():
         ConfusionMatrixDisplay.from_estimator(model, X_val, y_val)
         plt.savefig("conf_matrix.png")
         live.log_image("conf_matrix.png", "conf_matrix.png")
-
-    with log_stage("Model Training"):
-        model.fit(X_train, y_train)
 
     # Model validation
     with log_stage("Model Evaluation"):
