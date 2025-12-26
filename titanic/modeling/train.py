@@ -9,13 +9,10 @@ from dvclive import Live
 
 # Алиас, чтобы не конфликтовало с loguru
 from loguru import logger
-import matplotlib.pyplot as plt
 from omegaconf import DictConfig, OmegaConf
 import pandas as pd
 from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 from sklearn.metrics import (
-    ConfusionMatrixDisplay,
-    RocCurveDisplay,
     accuracy_score,
     f1_score,
     precision_score,
@@ -128,22 +125,12 @@ def train_model():
     with log_stage("Model Training"):
         model.fit(X_train, y_train)
 
-    with log_stage("Generating Evaluation Plots"):
-        # Рисуем ROC Curve
-        RocCurveDisplay.from_estimator(model, X_val, y_val)
-        plt.savefig("roc_curve.png")
-        live.log_image("roc_curve.png", "roc_curve.png")
-
-        # Рисуем Confusion Matrix
-        ConfusionMatrixDisplay.from_estimator(model, X_val, y_val)
-        plt.savefig("conf_matrix.png")
-        live.log_image("conf_matrix.png", "conf_matrix.png")
-
     # Model validation
     with log_stage("Model Evaluation"):
         predictions = model.predict(X_val)
         probabilities = model.predict_proba(X_val)[:, 1]
-
+        live.log_sklearn_plot("confusion_matrix", y_val, predictions)
+        live.log_sklearn_plot("roc", y_val, probabilities)
         # Calculate metrics
         metrics = {
             "accuracy": accuracy_score(y_val, predictions),
