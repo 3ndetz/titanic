@@ -63,12 +63,12 @@ def train_model():
     """
     # Load experiment params
     params = load_params()
-    cfg = validate_params(params)
+    validate_params(params)
     logger.info("Parameters loaded, schema valid.")
     task = Task.init(
         project_name="Titanic_HW", task_name="Train_Model", auto_connect_frameworks=True
     )
-    task.connect(OmegaConf.to_container(cfg, resolve=True))
+    task.connect(OmegaConf.to_container(params, resolve=True))
     # Universal params
     seed = params.train.seed
     test_size = params.train.test_size

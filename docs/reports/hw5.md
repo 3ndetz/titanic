@@ -167,6 +167,8 @@ task.close()
 
 Правда, долго, секунд 20. Но работает.
 
+#### Интеграция в код
+
 Засунул Task в `titanic/dataset.py` в функцию process_data, чтобы логировался этап подготовки данных.
 После функции добавил `task.close()`, чтобы явно закрыть таск.
 
@@ -175,3 +177,13 @@ task.close()
 Добавим инит таска, аплоад модели и метрик после трейна.
 Коммитим.
 
+#### Запуск в коде
+
+Проверим repro чтобы дата процесснулась и это попало в CML
+
+dvc repro
+
+dvc exp run train --name hw5_rf_3_fix -S train.pipeline=random_forest -S train.n_estimators=15 -S train.max_depth=10
+dvc exp run train --name hw5_rf_4_bad -S train.pipeline=random_forest -S train.test_size=0.5
+dvc exp run train --name hw5_nn_3_test3 -S train.pipeline=neural_network -S train.x_size=150 -S train.y_size=200
+dvc exp run train --name hw5_nn_4_bad -S train.pipeline=neural_network -S train.test_size=0.5
