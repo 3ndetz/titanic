@@ -9,6 +9,10 @@ on:
       - final
     paths:
       - 'docs/**'
+
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
