@@ -3,6 +3,10 @@ import os
 from pathlib import Path
 import pickle
 
+from clearml import Logger as ClearMLLogger
+from clearml import Task
+
+# Алиас, чтобы не конфликтовало с loguru
 from loguru import logger
 from omegaconf import DictConfig, OmegaConf
 import pandas as pd
@@ -59,8 +63,12 @@ def train_model():
     """
     # Load experiment params
     params = load_params()
-    validate_params(params)
+    cfg = validate_params(params)
     logger.info("Parameters loaded, schema valid.")
+    task = Task.init(
+        project_name="Titanic_HW", task_name="Train_Model", auto_connect_frameworks=True
+    )
+    task.connect(OmegaConf.to_container(cfg, resolve=True))
     # Universal params
     seed = params.train.seed
     test_size = params.train.test_size
@@ -128,7 +136,14 @@ def train_model():
             "precision": precision_score(y_val, predictions),
             "recall": recall_score(y_val, predictions),
         }
-
+        cl_logger = ClearMLLogger.current_logger()
+        for metric_name, value in metrics.items():
+            cl_logger.report_scalar(
+                title="Evaluation Metrics",  # Название графика
+                series=metric_name,  # Название линии (accuracy, f1...)
+                value=value,
+                iteration=1,  # 1, т.к. это финальная валидация
+            )
     # Сохраняем метрики
     os.makedirs(MODELS_DIR, exist_ok=True)
     with open(MODELS_DIR / "metrics.json", "w", encoding="utf-8") as f:
@@ -144,6 +159,11 @@ def train_model():
     # Save model
     with log_stage("Saving Model"):
         save_model(model, MODELS_DIR / "model.pkl")
+    # 1. Загружаем модель (файл)
+    task.upload_artifact(name="Model Pickle", artifact_object=str(MODELS_DIR / "model.pkl"))
+
+    # 2. Загружаем json с метриками (как файл, чтобы можно было скачать)
+    task.upload_artifact(name="Metrics JSON", artifact_object=str(MODELS_DIR / "metrics.json"))
 
     test_data = None
 

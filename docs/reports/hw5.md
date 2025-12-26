@@ -96,3 +96,82 @@ Installed 6 packages in 151ms
 ```
 
 Вносим `clearml~=2.1.0` в зависимости в pyproject.toml.
+
+Запомним его рекомендацию
+
+```py
+from clearml import Task
+task = Task.init(project_name="my project", task_name="my task")
+```
+
+Потом так и начнём внедрять в код, но сначала сделаем креды.
+
+Выполняем `clearml-init`.
+
+А пока тыкнем на CREATE NEW CREDENTIALS прямо из старт-окна.
+
+Выдал ключанские:
+
+```text
+api {
+  web_server: http://localhost:8080
+  api_server: http://localhost:8008
+  files_server: http://localhost:8081
+  credentials {
+    "access_key" = "КЛЮЧ_ДОСТУПА"
+    "secret_key" = "СЕКРЕТНЫЙ_КЛЮЧ"
+  }
+}
+```
+
+clearml-init запрашивает как раз эти креды, вставляем ему в консоль.
+
+```bash
+Port 8080 is the web port. Replacing 8080 with 8008 for API server
+
+ClearML Hosts configuration:
+Web App: http://localhost:8080
+API: http://localhost:8008
+File Store: http://localhost:8081
+
+Verifying credentials ...
+Credentials verified!
+
+New configuration stored in C:\Users\jayra\clearml.conf
+ClearML setup completed successfully.
+```
+
+Креды готовы, теперь можно тыкаться в код.
+
+### 3. Интеграция ClearML в код
+
+
+#### Тест
+
+Сначала проверим, работает ли оно вообще.
+Из корня репки запустим вот это:
+
+```py
+from clearml import Task
+
+# Эта строчка сама создаст Проект "Titanic_HW" и Эксперимент "Setup_Check"
+task = Task.init(project_name="Titanic_HW", task_name="Setup_Check")
+
+print("ClearML работает!")
+task.close()
+```
+
+Отлично, работает!
+
+![alt text](images/hw5/image-3.png)
+
+Правда, долго, секунд 20. Но работает.
+
+Засунул Task в `titanic/dataset.py` в функцию process_data, чтобы логировался этап подготовки данных.
+После функции добавил `task.close()`, чтобы явно закрыть таск.
+
+Теперь к `titanic/modeling/train.py`.
+
+Добавим инит таска, аплоад модели и метрик после трейна.
+Коммитим.
+
