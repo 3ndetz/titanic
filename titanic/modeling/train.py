@@ -164,6 +164,7 @@ def train_model():
     with log_stage("Saving Model"):
         save_model(model, MODELS_DIR / "model.pkl")
     # 1. Загружаем модель (файл)
+    live.end()
     task.upload_artifact(name="Model Pickle", artifact_object=str(MODELS_DIR / "model.pkl"))
 
     # 2. Загружаем json с метриками (как файл, чтобы можно было скачать)
