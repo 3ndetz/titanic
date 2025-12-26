@@ -82,3 +82,15 @@
 Приступаем к выполнению. Начнём с gh actions. Потом сделаем пример авто-отчёта по эксперименту.
 
 Добавил CI по [примеру](https://github.com/marketplace/actions/mkdocs-action), настроил его под наш репо. Закоммитил.
+
+Пошли коммиты, пошли actions:
+
+![alt text](images/hw6/image.png)
+
+![alt text](images/hw6/image-1.png)
+
+Внесённое изменение сразу отобразилось:
+
+![alt text](images/hw6/image-2.png)
+
+Отлично, всё работает! Идём дальше.
