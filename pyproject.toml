@@ -17,6 +17,7 @@ classifiers = [
 ]
 dependencies = [
     "clearml~=2.1.0",
+    "clearml-agent~=2.0.6",
     "dvc~=3.64.0",
     "dvclive~=3.49.0",
     "dvc-gdrive~=3.0.1",
@@ -28,6 +29,7 @@ dependencies = [
     "pandas~=2.3.3",
     "pandera[io]~=0.27.0",
     "pip~=25.3",
+    "psutil~=7.0.0",
     "pre-commit~=4.5.0",
     "pyarrow~=22.0.0",
     "pydantic~=2.12.5",
