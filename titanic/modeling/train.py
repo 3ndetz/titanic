@@ -4,7 +4,7 @@ from pathlib import Path
 import pickle
 
 from clearml import Logger as ClearMLLogger
-from clearml import Task
+from clearml import OutputModel, Task
 from dvclive import Live
 
 # Алиас, чтобы не конфликтовало с loguru
@@ -71,7 +71,7 @@ def train_model():
     validate_params(params)
     logger.info("Parameters loaded, schema valid.")
     live.log_params(params["train"])
-    task = Task.init(
+    task: Task = Task.init(
         project_name="Titanic_HW", task_name="Train_Model", auto_connect_frameworks=True
     )
     task.connect(OmegaConf.to_container(params, resolve=True))
@@ -177,12 +177,20 @@ def train_model():
     # predictions = model.predict(X_test)
 
     # Save model
+    MODEL_FILEPATH = MODELS_DIR / "model.pkl"
     with log_stage("Saving Model"):
-        save_model(model, MODELS_DIR / "model.pkl")
+        save_model(model, MODEL_FILEPATH)
     # 1. Загружаем модель (файл)
     live.end()
-    task.upload_artifact(name="Model Pickle", artifact_object=str(MODELS_DIR / "model.pkl"))
-
+    # Грузим в ClearML
+    output_model = OutputModel(
+        task=task,
+        # config_dict=
+        name="trained_sklearn_model",
+        tags=[params.train.pipeline],
+        framework="sklearn",
+    )
+    output_model.update_weights(weights_filename=str(MODEL_FILEPATH), auto_delete_file=False)
     # 2. Загружаем json с метриками (как файл, чтобы можно было скачать)
     task.upload_artifact(name="Metrics JSON", artifact_object=str(MODELS_DIR / "metrics.json"))
 

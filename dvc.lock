@@ -33,8 +33,8 @@ stages:
       size: 16646
     - path: titanic/modeling/train.py
       hash: md5
-      md5: ea1efe2a5a8dbb9a253a36de3ac392dd
-      size: 7188
+      md5: fd894dad4f41320c112eb9824139a124
+      size: 7458
     params:
       params.yaml:
         train.max_depth: 5
