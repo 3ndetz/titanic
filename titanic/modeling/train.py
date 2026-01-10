@@ -157,13 +157,12 @@ def train_model():
         }
         cl_logger = ClearMLLogger.current_logger()
         for metric_name, value in metrics.items():
-            live.log_metric(metric_name, value)
+            live.log_metric(metric_name, value, plot=False)
             cl_logger.report_scalar(
                 title="Evaluation Metrics",  # Название графика
                 series=metric_name,  # Название линии (accuracy, f1...)
                 value=value,
                 iteration=1,  # 1, т.к. это финальная валидация
-                plot=False,
             )
     # Сохраняем метрики
     os.makedirs(MODELS_DIR, exist_ok=True)
