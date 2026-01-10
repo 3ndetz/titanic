@@ -17,8 +17,8 @@ stages:
       size: 1459
     - path: titanic/dataset.py
       hash: md5
-      md5: 2af35ca3e4218bfb90d95efd4b7b2c11
-      size: 5090
+      md5: 83b16880e17b456c390377ada1ec6aa0
+      size: 5132
     outs:
     - path: data/processed/processed.parquet
       hash: md5
@@ -33,24 +33,24 @@ stages:
       size: 16646
     - path: titanic/modeling/train.py
       hash: md5
-      md5: 5a24c93d3fcd1c40e8bfc0c7846a9e30
-      size: 6277
+      md5: ea1efe2a5a8dbb9a253a36de3ac392dd
+      size: 7188
     params:
       params.yaml:
         train.max_depth: 5
         train.max_iter: 1000
         train.n_estimators: 10
-        train.pipeline: random_forest
+        train.pipeline: neural_network
         train.seed: 1
-        train.test_size: 0.5
+        train.test_size: 0.2
         train.x_size: 150
         train.y_size: 100
     outs:
     - path: data/models/metrics.json
       hash: md5
-      md5: 234383cf7628729663734f950c32c3a3
-      size: 144
+      md5: a0ef7e33fcf409d28e0e0fda928b60b5
+      size: 158
     - path: data/models/model.pkl
       hash: md5
-      md5: 9ff3aff364514426355cd49675fd7c5e
-      size: 39039
+      md5: 6ff606ab0aedce56de665a4914e02086
+      size: 522827
