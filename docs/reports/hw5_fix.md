@@ -64,6 +64,39 @@ Worker "onixpc:0" - Listening to queues:
 
 Воркер запущен. Теперь когда мы дадим таск на clearml, воркер должен взять его на выполнение.
 
-Теперь обновим clearml_pipeline.py чтобы можно было запускать через планировщик с параметром `--mode schedule`. 
+Теперь обновим clearml_pipeline.py чтобы можно было запускать через планировщик.
 
-```python clearml_pipeline.py --mode schedule```
+Просто убираем `PipelineDecorator.run_locally()`, ведь у нас настроен воркер. Ну для красоты добавим запуск через параметры.
+
+Запускаем:
+
+```bash
+(titanic) C:\Stud\Repos\titanic>python clearml_pipeline.py --mode ui
+ClearML Task: created new task id=a682163d01b24d8cb8545de14c5dda0d
+ClearML results page: http://127.0.0.1:8080/projects/f08db65d0b7a4215a1755a396031b65c/experiments/a682163d01b24d8cb8545de14c5dda0d/output/log
+ClearML pipeline page: http://127.0.0.1:8080/pipelines/f08db65d0b7a4215a1755a396031b65c/experiments/a682163d01b24d8cb8545de14c5dda0d
+Switching to remote execution, output log page http://127.0.0.1:8080/projects/f08db65d0b7a4215a1755a396031b65c/experiments/a682163d01b24d8cb8545de14c5dda0d/output/log
+ClearML Terminating local execution process - continuing execution remotely
+```
+
+Видим
+
+![alt text](images/hw5_fix/image-1.png)
+
+Воркер работает в своей среде
+
+![alt text](images/hw5_fix/image-2.png)
+
+Запуск провален, надо вручную в компонентах пайплайна указать название queue на default...
+
+![alt text](images/hw5_fix/image-3.png)
+
+Указываем и запускаем ещё раз.
+
+Видим, что запуск пошёл.
+
+![alt text](images/hw5_fix/image-4.png)
+
+Не заработало. Во-первых clearml агент неправильно сам резолвит зависимости. Во-вторых неясно соответствие времени scheduler'а и локального - возможно он ждёт.
+
+Проверим аплоад модели локально и попробуем повторить пайплайн, запущенный через run_locally.
