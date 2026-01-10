@@ -71,7 +71,7 @@ def train_model():
     validate_params(params)
     logger.info("Parameters loaded, schema valid.")
     live.log_params(params["train"])
-    task = Task.init(
+    task: Task = Task.init(
         project_name="Titanic_HW", task_name="Train_Model", auto_connect_frameworks=True
     )
     task.connect(OmegaConf.to_container(params, resolve=True))
