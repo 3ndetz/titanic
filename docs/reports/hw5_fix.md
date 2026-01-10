@@ -100,3 +100,10 @@ ClearML Terminating local execution process - continuing execution remotely
 Не заработало. Во-первых clearml агент неправильно сам резолвит зависимости. Во-вторых неясно соответствие времени scheduler'а и локального - возможно он ждёт.
 
 Проверим аплоад модели локально и попробуем повторить пайплайн, запущенный через run_locally.
+
+Теперь модели сохраняются как надо в CML, добавляются теги.
+
+![alt text](images/hw5_fix/image-6.png)
+
+![alt text](images/hw5_fix/image-5.png)
+
