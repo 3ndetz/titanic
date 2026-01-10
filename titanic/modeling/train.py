@@ -177,12 +177,20 @@ def train_model():
     # predictions = model.predict(X_test)
 
     # Save model
+    MODEL_FILEPATH = MODELS_DIR / "model.pkl"
     with log_stage("Saving Model"):
-        save_model(model, MODELS_DIR / "model.pkl")
+        save_model(model, MODEL_FILEPATH)
     # 1. Загружаем модель (файл)
     live.end()
-    output_model = OutputModel(task=task, framework="sklearn")
-    output_model.update_weights(weights_filename=str(MODELS_DIR / "model.pkl"))
+    # Грузим в ClearML
+    output_model = OutputModel(
+        task=task,
+        # config_dict=
+        name="trained_sklearn_model",
+        tags=[params.train.pipeline],
+        framework="sklearn",
+    )
+    output_model.update_weights(weights_filename=str(MODEL_FILEPATH), auto_delete_file=False)
     # 2. Загружаем json с метриками (как файл, чтобы можно было скачать)
     task.upload_artifact(name="Metrics JSON", artifact_object=str(MODELS_DIR / "metrics.json"))
 
