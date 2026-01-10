@@ -85,3 +85,14 @@ export PRINT_HELP_PYSCRIPT
 
 help:
 	@$(PYTHON_INTERPRETER) -c "${PRINT_HELP_PYSCRIPT}" < $(MAKEFILE_LIST)
+
+
+# REPORT Publish
+
+## Publish experiment report
+.PHONY: report
+report:
+	$(PYTHON_INTERPRETER) publish_report.py
+	@echo ">>> Report generated and saved."
+	cd docs && mkdocs gh-deploy
+	@echo ">>> Report published to GitHub Pages."

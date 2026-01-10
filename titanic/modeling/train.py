@@ -3,11 +3,19 @@ import os
 from pathlib import Path
 import pickle
 
+from clearml import Logger as ClearMLLogger
+from clearml import Task
+from dvclive import Live
+
+# Алиас, чтобы не конфликтовало с loguru
 from loguru import logger
+import matplotlib.pyplot as plt
 from omegaconf import DictConfig, OmegaConf
 import pandas as pd
 from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 from sklearn.metrics import (
+    ConfusionMatrixDisplay,
+    RocCurveDisplay,
     accuracy_score,
     f1_score,
     precision_score,
@@ -58,9 +66,15 @@ def train_model():
     Train a machine learning model based on the provided parameters.
     """
     # Load experiment params
+    live = Live(save_dvc_exp=True, report="md")
     params = load_params()
     validate_params(params)
     logger.info("Parameters loaded, schema valid.")
+    live.log_params(params["train"])
+    task = Task.init(
+        project_name="Titanic_HW", task_name="Train_Model", auto_connect_frameworks=True
+    )
+    task.connect(OmegaConf.to_container(params, resolve=True))
     # Universal params
     seed = params.train.seed
     test_size = params.train.test_size
@@ -111,7 +125,6 @@ def train_model():
 
         X_train = pd.get_dummies(train_data[features])  # noqa: C103
         X_val = pd.get_dummies(val_data[features])  # noqa: C103
-
     with log_stage("Model Training"):
         model.fit(X_train, y_train)
 
@@ -119,7 +132,21 @@ def train_model():
     with log_stage("Model Evaluation"):
         predictions = model.predict(X_val)
         probabilities = model.predict_proba(X_val)[:, 1]
+        live.log_sklearn_plot("confusion_matrix", y_val, predictions)
+        live.log_sklearn_plot("roc", y_val, probabilities)
+        fig_cm, ax_cm = plt.subplots()
+        ConfusionMatrixDisplay.from_predictions(
+            y_val, predictions, ax=ax_cm, cmap="Blues", normalize=None
+        )
+        ax_cm.set_title("Confusion Matrix")
+        live.log_image("confusion_matrix.png", fig_cm)
+        plt.close(fig_cm)
 
+        fig_roc, ax_roc = plt.subplots()
+        RocCurveDisplay.from_predictions(y_val, probabilities, ax=ax_roc)
+        ax_roc.set_title("ROC Curve")
+        live.log_image("roc.png", fig_roc)
+        plt.close(fig_roc)
         # Calculate metrics
         metrics = {
             "accuracy": accuracy_score(y_val, predictions),
@@ -128,7 +155,15 @@ def train_model():
             "precision": precision_score(y_val, predictions),
             "recall": recall_score(y_val, predictions),
         }
-
+        cl_logger = ClearMLLogger.current_logger()
+        for metric_name, value in metrics.items():
+            live.log_metric(metric_name, value, plot=False)
+            cl_logger.report_scalar(
+                title="Evaluation Metrics",  # Название графика
+                series=metric_name,  # Название линии (accuracy, f1...)
+                value=value,
+                iteration=1,  # 1, т.к. это финальная валидация
+            )
     # Сохраняем метрики
     os.makedirs(MODELS_DIR, exist_ok=True)
     with open(MODELS_DIR / "metrics.json", "w", encoding="utf-8") as f:
@@ -144,6 +179,12 @@ def train_model():
     # Save model
     with log_stage("Saving Model"):
         save_model(model, MODELS_DIR / "model.pkl")
+    # 1. Загружаем модель (файл)
+    live.end()
+    task.upload_artifact(name="Model Pickle", artifact_object=str(MODELS_DIR / "model.pkl"))
+
+    # 2. Загружаем json с метриками (как файл, чтобы можно было скачать)
+    task.upload_artifact(name="Metrics JSON", artifact_object=str(MODELS_DIR / "metrics.json"))
 
     test_data = None
 

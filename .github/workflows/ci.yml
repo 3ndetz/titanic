@@ -1,0 +1,34 @@
+name: Deploy Docs
+
+on:
+  push:
+    branches:
+      - main
+      - hw6
+      - dev
+      - final
+    paths:
+      - 'docs/**'
+  workflow_dispatch:  # Позволяет запустить вручную из интерфейса GitHub
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+      - name: Build
+        uses: Tiryoh/actions-mkdocs@v0
+        with:
+          # mkdocs_version: 'latest' # option
+          # mkdocs_version: '1.5.3' # option
+          requirements: 'docs/requirements.txt' # option
+          configfile: 'docs/mkdocs.yml' # option
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/site

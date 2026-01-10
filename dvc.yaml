@@ -27,3 +27,24 @@ stages:
     - data/models/model.pkl
     metrics:
     - data/models/metrics.json
+
+plots:
+- dvclive/plots/images
+- dvclive/plots/sklearn/confusion_matrix.json:
+    template: confusion
+    x: actual
+    y: predicted
+    title: Confusion Matrix
+    x_label: True Label
+    y_label: Predicted Label
+- dvclive/plots/sklearn/roc.json:
+    template: simple
+    x: fpr
+    y: tpr
+    title: Receiver operating characteristic (ROC)
+    x_label: False Positive Rate
+    y_label: True Positive Rate
+params:
+- dvclive/params.yaml
+metrics:
+- dvclive/metrics.json
