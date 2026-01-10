@@ -5,6 +5,7 @@ import pickle
 
 from clearml import Logger as ClearMLLogger
 from clearml import Task
+from dvclive import Live
 
 # Алиас, чтобы не конфликтовало с loguru
 from loguru import logger
@@ -62,9 +63,11 @@ def train_model():
     Train a machine learning model based on the provided parameters.
     """
     # Load experiment params
+    live = Live(save_dvc_exp=True, report="md")
     params = load_params()
     validate_params(params)
     logger.info("Parameters loaded, schema valid.")
+    live.log_params(params["train"])
     task = Task.init(
         project_name="Titanic_HW", task_name="Train_Model", auto_connect_frameworks=True
     )
@@ -119,7 +122,6 @@ def train_model():
 
         X_train = pd.get_dummies(train_data[features])  # noqa: C103
         X_val = pd.get_dummies(val_data[features])  # noqa: C103
-
     with log_stage("Model Training"):
         model.fit(X_train, y_train)
 
@@ -127,7 +129,8 @@ def train_model():
     with log_stage("Model Evaluation"):
         predictions = model.predict(X_val)
         probabilities = model.predict_proba(X_val)[:, 1]
-
+        live.log_sklearn_plot("confusion_matrix", y_val, predictions)
+        live.log_sklearn_plot("roc", y_val, probabilities)
         # Calculate metrics
         metrics = {
             "accuracy": accuracy_score(y_val, predictions),
@@ -138,6 +141,7 @@ def train_model():
         }
         cl_logger = ClearMLLogger.current_logger()
         for metric_name, value in metrics.items():
+            live.log_metric(metric_name, value)
             cl_logger.report_scalar(
                 title="Evaluation Metrics",  # Название графика
                 series=metric_name,  # Название линии (accuracy, f1...)
@@ -160,6 +164,7 @@ def train_model():
     with log_stage("Saving Model"):
         save_model(model, MODELS_DIR / "model.pkl")
     # 1. Загружаем модель (файл)
+    live.end()
     task.upload_artifact(name="Model Pickle", artifact_object=str(MODELS_DIR / "model.pkl"))
 
     # 2. Загружаем json с метриками (как файл, чтобы можно было скачать)
