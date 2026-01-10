@@ -92,7 +92,7 @@ help:
 ## Publish experiment report
 .PHONY: report
 report:
-	$(PYTHON_INTERPRETER) titanic/publish_report.py
+	$(PYTHON_INTERPRETER) publish_report.py
 	@echo ">>> Report generated and saved."
-	mkdocs gh-deploy
+	cd docs && mkdocs gh-deploy
 	@echo ">>> Report published to GitHub Pages."
