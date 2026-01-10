@@ -4,7 +4,7 @@ from pathlib import Path
 import pickle
 
 from clearml import Logger as ClearMLLogger
-from clearml import Task
+from clearml import OutputModel, Task
 from dvclive import Live
 
 # Алиас, чтобы не конфликтовало с loguru
@@ -181,8 +181,8 @@ def train_model():
         save_model(model, MODELS_DIR / "model.pkl")
     # 1. Загружаем модель (файл)
     live.end()
-    task.upload_artifact(name="Model Pickle", artifact_object=str(MODELS_DIR / "model.pkl"))
-
+    output_model = OutputModel(task=task, framework="sklearn")
+    output_model.update_weights(weights_filename=str(MODELS_DIR / "model.pkl"))
     # 2. Загружаем json с метриками (как файл, чтобы можно было скачать)
     task.upload_artifact(name="Metrics JSON", artifact_object=str(MODELS_DIR / "metrics.json"))
 
