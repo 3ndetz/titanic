@@ -80,6 +80,45 @@ metrics.json
 
 Как видим, файл ни на что не ссылается, значит можно просто вставить md'шку в доку и она сама подцепит его!
 
-Cltkfnm
+Реализуем простой скрипт. Добавил его в корень как `publish_report.py`. Для удобства также обновим make.
 
-Добавим, что в идеальном сценарии нам нужно также добавить систему комментариев для экспериментов, чтобы можно было делать вызов уровня `make report --comment "New bad experiment"`, который будет добавляться к эксперименту.
+Запускаем:
+
+```bash
+(titanic) C:\Stud\Repos\titanic>make report
+python publish_report.py
+Report published: docs/docs/experiments/Exp-10-01-2026-6114afbe.md
+">>> Report generated and saved."
+cd docs && mkdocs gh-deploy
+
+...
+
+Enumerating objects: 43, done.
+Counting objects: 100% (43/43), done.
+Delta compression using up to 24 threads
+Compressing objects: 100% (17/17), done.
+Writing objects: 100% (24/24), 45.37 KiB | 4.12 MiB/s, done.
+Total 24 (delta 11), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (11/11), completed with 10 local objects.
+To https://github.com/3ndetz/titanic.git
+   3d76fc9..448965a  gh-pages -> gh-pages
+INFO    -  Your documentation should shortly be available at: https://3ndetz.github.io/titanic/
+">>> Report published to GitHub Pages."
+
+```
+
+Добавим, что в идеальном сценарии нам нужно также добавить систему комментариев для экспериментов, чтобы можно было делать вызов уровня `make report --comment "New bad experiment"`, который будет добавляться к эксперименту. Также в идеальном сценарии experiment name тоже нужно подтягивать, но в нашем случае это необязательно.
+
+Примерно через минуту появился наш эксперимент уже в доке:
+
+![alt text](images/hw6_fix/image-2.png)
+
+![alt text](images/hw6_fix/image-3.png)
+
+Для красоты, сделаем ещё 1 эксперимент с train test_size 0.95, чтобы убить модель и посмотреть, как это отобразится в отчёте.
+
+`dvc exp run train --name hw6f_nn_6_verybad -S train.pipeline=neural_network -S train.test_size=0.95`
+
+И публикуем отчёт:
+
+`make report`
