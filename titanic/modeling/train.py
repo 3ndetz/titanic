@@ -9,10 +9,13 @@ from dvclive import Live
 
 # Алиас, чтобы не конфликтовало с loguru
 from loguru import logger
+import matplotlib.pyplot as plt
 from omegaconf import DictConfig, OmegaConf
 import pandas as pd
 from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 from sklearn.metrics import (
+    ConfusionMatrixDisplay,
+    RocCurveDisplay,
     accuracy_score,
     f1_score,
     precision_score,
@@ -63,7 +66,7 @@ def train_model():
     Train a machine learning model based on the provided parameters.
     """
     # Load experiment params
-    live = Live(save_dvc_exp=True, report="md")
+    live = Live(save_dvc_exp=True, report="md", monitor_system=True)
     params = load_params()
     validate_params(params)
     logger.info("Parameters loaded, schema valid.")
@@ -131,6 +134,19 @@ def train_model():
         probabilities = model.predict_proba(X_val)[:, 1]
         live.log_sklearn_plot("confusion_matrix", y_val, predictions)
         live.log_sklearn_plot("roc", y_val, probabilities)
+        fig_cm, ax_cm = plt.subplots()
+        ConfusionMatrixDisplay.from_predictions(
+            y_val, predictions, ax=ax_cm, cmap="Blues", normalize=None
+        )
+        ax_cm.set_title("Confusion Matrix")
+        live.log_image("confusion_matrix.png", fig_cm)
+        plt.close(fig_cm)
+
+        fig_roc, ax_roc = plt.subplots()
+        RocCurveDisplay.from_predictions(y_val, probabilities, ax=ax_roc)
+        ax_roc.set_title("ROC Curve")
+        live.log_image("roc.png", fig_roc)
+        plt.close(fig_roc)
         # Calculate metrics
         metrics = {
             "accuracy": accuracy_score(y_val, predictions),
@@ -147,6 +163,7 @@ def train_model():
                 series=metric_name,  # Название линии (accuracy, f1...)
                 value=value,
                 iteration=1,  # 1, т.к. это финальная валидация
+                plot=False,
             )
     # Сохраняем метрики
     os.makedirs(MODELS_DIR, exist_ok=True)
